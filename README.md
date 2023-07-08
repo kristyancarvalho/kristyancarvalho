@@ -11,6 +11,7 @@
 <div align="center"/>
 
 ![GitHub stats](https://github-readme-stats.vercel.app/api?username=kriscrv&show_icons=true&border_radius=0&include_all_commits&theme=tokyonight)
+<Br />
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=kriscrv&layout=compact&card_width=446&border_radius=0&theme=tokyonight)](https://github.com/anuraghazra/github-readme-stats)
 
 </div>
