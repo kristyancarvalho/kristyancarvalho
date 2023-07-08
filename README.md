@@ -14,8 +14,6 @@
 
 <Br />
 
-<Br />
-
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=kriscrv&layout=compact&card_width=446&border_radius=0&theme=tokyonight)](https://github.com/anuraghazra/github-readme-stats)
 
 </div>
