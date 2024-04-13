@@ -10,7 +10,7 @@
   
 <div align="center"/>
 
-![GitHub stats](https://github-readme-stats.vercel.app/api?username=kristyancarvalho&show_icons=true&border_radius=0&include_all_commits=true&theme=tokyonight)
+![GitHub stats](https://github-readme-stats.vercel.app/api?username=kristyancarvalho&show_icons=true&border_radius=0&include_all_commits&theme=tokyonight)
 
 <Br />
 
