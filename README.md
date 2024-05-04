@@ -9,10 +9,6 @@
 </div>
 
 <hr />
-
-<Br />
-
-<Br />
   
 <div align="center"/>
 
