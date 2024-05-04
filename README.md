@@ -1,8 +1,14 @@
 <Br />
 
-<div>
-<h1 align="center">Hello👋 <br />Nice to see you here!</h1>
+<div align="center">
+
+  <a href="https://git.io/typing-svg">
+    <img src="https://readme-typing-svg.herokuapp.com/?lines=Hello,+There!+👋;Nice+to+see+you+here!&center=true&size=30">
+  </a>
+  
 </div>
+
+<hr />
 
 <Br />
 
