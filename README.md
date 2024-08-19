@@ -50,7 +50,7 @@
 </p>
 
 <!-- Snake -->
-![Snake animation](https://github.com/kriscrv/kriscrv/blob/output/github-contribution-grid-snake.svg)
+![Snake animation](https://github.com/kristyancarvalho/kristyancarvalho/blob/output/github-contribution-grid-snake.svg)
 
 <!-- Footer -->
 <div align="center">
