@@ -1,72 +1,84 @@
-<!-- Header -->
-<div align="center">
-  <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=b600ff&height=120&section=header"/>
-</div>
+<table>
+  <tr>
+    <td width="140">
+      <img src="https://avatars.githubusercontent.com/u/60079075?v=4" width="120" style="border-radius: 50%" />
+    </td>
+    <td>
+      <h3>Kristyan Carvalho</h3>
+      <p>
+        Desenvolvedor full-stack focado em soluções modernas e performáticas.<br/>
+        Apaixonado por boas interfaces, sistemas eficientes e automações práticas.
+      </p>
+      🌐 <a href="https://kristyan.dev">kristyan.dev</a>
+  </tr>
+</table>
 
-<!-- Typing Animation -->
-<div align="center">
+---
 
-  [![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Montserrat&weight=700&pause=200&color=FF00A9&size=35&lines=Hello+there!+👋;Nice+to+see+you+here!)](https://git.io/typing-svg)
-    
-</div>
+### 🧠 Sobre mim
 
+Sou um entusiasta de tecnologia e desenvolvimento de software, com foco em aplicações web, mobile e desktop. Adoro construir ferramentas úteis, interfaces simples e explorar novas linguagens e frameworks. Trabalho com foco em performance, arquitetura limpa e boas práticas de desenvolvimento.
 
+---
 
-<!-- GitHub Stats -->
-<div align="center">  
-  <img width="49%" height="195px" src="https://github-readme-stats.vercel.app/api?username=kristyancarvalho&show_icons=true&count_private=true&hide_border=true&title_color=b600ff&icon_color=c536ff&text_color=c9d1d9&bg_color=0d1117" alt="Kristyan Carvalho stats" /> 
-  <img width="41%" height="195px" src="https://github-readme-stats.vercel.app/api/top-langs/?username=kristyancarvalho&layout=compact&hide_border=true&title_color=b600ff&text_color=c9d1d9&bg_color=0d1117" />
-</div>
+### 🛠️ Tecnologias que uso
 
-<br />
-
-<!-- Languages -->
-<div align="center">
-
-  [![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Montserrat&weight=600&pause=200&color=ffffff&center=true&repeat=false&vCenter=true&size=20&lines=Languages:)](https://git.io/typing-svg)
-    
-</div>
-<p align="center">
-  <a href="https://www.w3.org/html/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="HTML5" width="40" height="40"/> </a>
-  <a href="https://www.w3schools.com/css/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="CSS3" width="40" height="40"/> </a>
-  <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="JavaScript" width="40" height="40"/> </a>
-  <a href="https://www.typescriptlang.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg" alt="TypeScript" width="40" height="40"/> </a>
+#### 💻 Linguagens
+<p align="left">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" width="24"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" width="24"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Go_Logo_Blue.svg" alt="Go" width="36"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" width="24"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" width="24"/>
 </p>
 
-<!-- Tools -->
-<div align="center">
-
-  [![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Montserrat&weight=600&pause=200&color=ffffff&center=true&repeat=false&vCenter=true&size=20&lines=Tools:)](https://git.io/typing-svg)
-    
-</div>
-<p align="center">
-  <a href="https://nodejs.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg" alt="Node.js" width="40" height="40"/> </a>
-  <a href="https://expressjs.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original-wordmark.svg" alt="Express.js" width="40" height="40"/> </a>
-  <a href="https://fastify.dev" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/6910f0503efdd315c8f9b858234310c06e04d9c0/icons/fastify/fastify-original.svg" alt="Fastify" width="40" height="40"/> </a>
-  <a href="https://www.figma.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/figma/figma-icon.svg" alt="Figma" width="40" height="40"/> </a>
-  <a href="https://www.mongodb.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original-wordmark.svg" alt="MongoDB" width="40" height="40"/> </a>
-  <a href="https://firebase.google.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/6910f0503efdd315c8f9b858234310c06e04d9c0/icons/firebase/firebase-original-wordmark.svg" alt="FireBase" width="40" height="40"/> </a>
-  <a href="https://www.sqlite.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/6910f0503efdd315c8f9b858234310c06e04d9c0/icons/sqlite/sqlite-original-wordmark.svg" alt="SQLite" width="40" height="40"/> </a>
-  <a href="https://www.prisma.io" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/6910f0503efdd315c8f9b858234310c06e04d9c0/icons/prisma/prisma-original-wordmark.svg" alt="Prisma-ORM" width="40" height="40"/> </a>
-  <a href="https://www.docker.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/6910f0503efdd315c8f9b858234310c06e04d9c0/icons/docker/docker-original-wordmark.svg" alt="Docker" width="40" height="40"/> </a>
-  <a href="https://postman.com" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg" alt="Postman" width="40" height="40"/> </a>
-  <a href="https://jestjs.io" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/6910f0503efdd315c8f9b858234310c06e04d9c0/icons/jest/jest-plain.svg" alt="Jest" width="40" height="40"/> </a>
-  <a href="https://reactjs.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" alt="React" width="40" height="40"/> </a>
-  <a href="https://vitejs.dev" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/6910f0503efdd315c8f9b858234310c06e04d9c0/icons/vitejs/vitejs-original.svg" alt="ViteJS" width="40" height="40"/> </a>
-  <a href="https://nextjs.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/6910f0503efdd315c8f9b858234310c06e04d9c0/icons/nextjs/nextjs-line-wordmark.svg" alt="NextJS" width="40" height="40"/> </a>
-  <a href="https://sass-lang.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/sass/sass-original.svg" alt="Sass" width="40" height="40"/> </a>
-  <a href="https://tailwindcss.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/6910f0503efdd315c8f9b858234310c06e04d9c0/icons/tailwindcss/tailwindcss-original.svg" alt="TailwindCSS" width="40" height="40"/> </a>
+#### 🖥️ Backend
+<p align="left">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original-wordmark.svg" alt="Node.js" width="24"/>
+  <img src="https://www.mementotech.in/assets/images/icons/express.png" alt="Express.js" width="24"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastify/fastify-original.svg" alt="Fastify" width="24"/>
+  <img src="https://gin-gonic.com/_astro/gin.D6H2T_2v_ZD2G7l.webp" alt="Gin" width="24"/>
 </p>
 
-<!-- Snake -->
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kristyancarvalho/kristyancarvalho/output/github-contribution-grid-snake-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kristyancarvalho/kristyancarvalho/output/github-contribution-grid-snake.svg">
-  <img alt="github contribution grid snake animation" src="https://raw.githubusercontent.com/kristyancarvalho/kristyancarvalho/output/github-contribution-grid-snake.svg">
-</picture>
-
-<!-- Footer -->
-<div align="center">
-  <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=b600ff&height=120&section=footer"/>
-</div>
+#### 🎨 Frontend
+<p align="left">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" width="24"/>
+  <img src="https://peaks.fr/wp-content/uploads/2024/10/nextjs-icon-dark-background-1-1.png" alt="Next.js" width="24"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg" alt="Vite" width="24"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="TailwindCSS" width="24"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sass/sass-original.svg" alt="SASS" width="24"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/electron/electron-original.svg" alt="Electron" width="24"/>
 </p>
+
+#### 🗄️ Banco de Dados & ORM
+<p align="left">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original-wordmark.svg" alt="PostgreSQL" width="24"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sqlite/sqlite-original-wordmark.svg" alt="SQLite" width="24"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original-wordmark.svg" alt="MongoDB" width="24"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain-wordmark.svg" alt="Firebase" width="24"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prisma/prisma-original.svg" alt="Prisma" width="24"/>
+  <img src="https://miro.medium.com/v2/resize:fit:1200/1*XBvxUxqycRC8B8KGCuzJVw.png" alt="GORM" width="40"/>
+</p>
+
+#### 🚀 DevOps & Infra
+<p align="left">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original-wordmark.svg" alt="Docker" width="24"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original-wordmark.svg" alt="Git" width="24"/>
+  <img src="https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg" alt="Postman" width="24"/>
+  <img src="https://pm2.keymetrics.io/assets/pm2-logo-1.png" alt="PM2" width="24"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg" alt="Nginx" width="24"/>
+</p>
+
+#### 🧪 Testes
+<p align="left">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg" alt="Jest" width="24"/>
+</p>
+
+#### 🎨 UI/UX
+<p align="left">
+  <img src="https://www.vectorlogo.zone/logos/figma/figma-icon.svg" alt="Figma" width="24"/>
+</p>
+
+---
+
+<p align="center">Obrigado por visitar meu perfil! 🚀</p>
