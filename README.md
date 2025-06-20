@@ -1,7 +1,7 @@
 <table align="center" width="100%">
   <tr>
     <td width="140" valign="top">
-      <img src="https://avatars.githubusercontent.com/u/60079075?v=4" width="120" style="border-radius: 50%" />
+      <img src="https://avatars.githubusercontent.com/u/60079075?s=400&u=656f7f57b1895930124a13614d46180be1d3dc92&v=4" width="120" style="border-radius: 50%" />
     </td>
     <td valign="top">
       <h3>Kristyan Carvalho</h3>
