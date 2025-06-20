@@ -1,17 +1,19 @@
-<table>
+<table align="center">
   <tr>
-    <td width="140">
+    <td width="140" valign="top">
       <img src="https://avatars.githubusercontent.com/u/60079075?v=4" width="120" style="border-radius: 50%" />
     </td>
-    <td>
+    <td valign="top">
       <h3>Kristyan Carvalho</h3>
       <p>
         Desenvolvedor full-stack focado em soluções modernas e performáticas.<br/>
         Apaixonado por boas interfaces, sistemas eficientes e automações práticas.
       </p>
       🌐 <a href="https://kristyan.dev">kristyan.dev</a>
+    </td>
   </tr>
 </table>
+
 
 ---
 
