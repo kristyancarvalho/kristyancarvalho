@@ -1,4 +1,4 @@
-<table align="center">
+<table width="100%">
   <tr>
     <td width="140" valign="top">
       <img src="https://avatars.githubusercontent.com/u/60079075?v=4" width="120" style="border-radius: 50%" />
@@ -7,13 +7,33 @@
       <h3>Kristyan Carvalho</h3>
       <p>
         Desenvolvedor full-stack focado em soluções modernas e performáticas.<br/>
-        Apaixonado por boas interfaces, sistemas eficientes e automações práticas.
+        Apaixonado por boas interfaces, sistemas eficientes e automações práticas.<br/>
+        🌐 <a href="https://kristyan.dev">kristyan.dev</a>
       </p>
-      🌐 <a href="https://kristyan.dev">kristyan.dev</a>
+      <p>
+        <img src="https://komarev.com/ghpvc/?username=kristyancarvalho&color=b600ff&style=flat" alt="Profile views"/>
+        <img src="https://img.shields.io/github/followers/kristyancarvalho?label=Seguidores&style=flat&color=b600ff" alt="Followers"/>
+        <img src="https://img.shields.io/github/stars/kristyancarvalho?label=Stars&style=flat&color=c536ff" alt="Stars"/>
+        <img src="https://img.shields.io/github/commit-activity/m/kristyancarvalho/kristyancarvalho?label=Atividade+mensal&color=8e2be2&style=flat" alt="Commit activity"/>
+        <img src="https://img.shields.io/github/last-commit/kristyancarvalho/kristyancarvalho?label=%C3%9Altimo+commit&color=8e44ad&style=flat" alt="Último commit"/>
+      </p>
+      <p>
+        🧰 <b>Setup atual:</b><br/>
+        Neovim · tmux · wezterm
+      </p>
     </td>
   </tr>
 </table>
 
+---
+
+### 📝 Posts em Destaque
+
+<!-- BLOG-POST-LIST:START -->
+- [Dicas e Truques para Desenvolvimento com Prisma ORM](https://kristyan.dev/post/bAKM84m7j0bIMK7cVVs6)  
+- [O Retorno Breve do Twitter (X) no Brasil: O Que Aconteceu?](https://kristyan.dev/post/CindnaLftnGFJRdKHg9j)  
+- [Computação Quântica: Como os Desenvolvedores Podem Começar a Se Preparar](https://kristyan.dev/post/XgkK5PQotKrb6GC4B9GZ)  
+<!-- BLOG-POST-LIST:END -->
 
 ---
 
@@ -74,6 +94,7 @@ Sou um entusiasta de tecnologia e desenvolvimento de software, com foco em aplic
 #### 🧪 Testes
 <p align="left">
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg" alt="Jest" width="24"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Go_Logo_Blue.svg" alt="Go" width="36"/>
 </p>
 
 #### 🎨 UI/UX
