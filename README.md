@@ -1,4 +1,4 @@
-<table width="100%">
+<table align="center" width="100%">
   <tr>
     <td width="140" valign="top">
       <img src="https://avatars.githubusercontent.com/u/60079075?v=4" width="120" style="border-radius: 50%" />
