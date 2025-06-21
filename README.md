@@ -16,6 +16,7 @@
         <img src="https://img.shields.io/github/stars/kristyancarvalho?label=Stars&style=flat&color=c536ff" alt="Stars"/>
         <img src="https://img.shields.io/github/commit-activity/m/kristyancarvalho/kristyancarvalho?label=Atividade+mensal&color=8e2be2&style=flat" alt="Commit activity"/>
         <img src="https://img.shields.io/github/last-commit/kristyancarvalho/kristyancarvalho?label=%C3%9Altimo+commit&color=8e44ad&style=flat" alt="Último commit"/>
+        <img src="https://gitpulse.kristyan.dev/api/last-project?username=kristyancarvalho&color=%b600ff" alt="Última contribuição"/>
       </p>
       <p>
         🧰 <b>Setup atual:</b><br/>
