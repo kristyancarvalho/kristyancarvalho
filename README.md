@@ -19,7 +19,7 @@
         <p>
           <b>Última Contribuição:</b>
         </p>
-        <img src="https://gitpulse.kristyan.dev/api/last-project?username=kristyancarvalho&color=%b600ff" alt="Última contribuição"/>
+        <img src="https://gitpulse.kristyan.dev/api/last-project?username=kristyancarvalho&color=%23b600ff" alt="Latest contribution"/>
       </p>
       <p>
         🧰 <b>Setup atual:</b><br/>
