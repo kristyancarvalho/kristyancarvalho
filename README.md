@@ -1,111 +1,117 @@
-<table align="center" width="100%">
-  <tr>
-    <td width="140" valign="top">
-      <img src="https://avatars.githubusercontent.com/u/60079075?s=400&u=656f7f57b1895930124a13614d46180be1d3dc92&v=4" width="120" style="border-radius: 50%" />
-    </td>
-    <td valign="top">
-      <h3>Kristyan Carvalho</h3>
-      <p>
-        Desenvolvedor full-stack focado em soluções modernas e performáticas.<br/>
-        Apaixonado por boas interfaces, sistemas eficientes e automações práticas.<br/>
-        🌐 <a href="https://kristyan.dev">kristyan.dev</a>
-      </p>
-      <p>
-        <img src="https://komarev.com/ghpvc/?username=kristyancarvalho&color=b600ff&style=flat" alt="Profile views"/>
-        <img src="https://img.shields.io/github/followers/kristyancarvalho?label=Seguidores&style=flat&color=b600ff" alt="Followers"/>
-        <img src="https://img.shields.io/github/stars/kristyancarvalho?label=Stars&style=flat&color=c536ff" alt="Stars"/>
-        <img src="https://img.shields.io/github/commit-activity/m/kristyancarvalho/kristyancarvalho?label=Atividade+mensal&color=8e2be2&style=flat" alt="Commit activity"/>
-        <img src="https://img.shields.io/github/last-commit/kristyancarvalho/kristyancarvalho?label=%C3%9Altimo+commit&color=8e44ad&style=flat" alt="Último commit"/>
-        <p>
-          <b>Última Contribuição:</b>
-        </p>
-        <img src="https://gitpulse.kristyan.dev/api/last-project?username=kristyancarvalho&color=%23b600ff" alt="Latest contribution"/>
-      </p>
-      <p>
-        🧰 <b>Setup atual:</b><br/>
-        Neovim · tmux · wezterm
-      </p>
-    </td>
-  </tr>
+<div align="center">
+
+```
+kristyancarvalho ~ %
+```
+
+<a href="https://kristyan.dev">
+  <img src="https://img.shields.io/badge/kristyan.dev-%23b600ff?style=for-the-badge&logo=vercel&logoColor=white" />
+</a>
+&nbsp;
+<img src="https://komarev.com/ghpvc/?username=kristyancarvalho&color=b600ff&style=for-the-badge&label=VISITAS" />
+&nbsp;
+<img src="https://img.shields.io/github/followers/kristyancarvalho?label=SEGUIDORES&style=for-the-badge&color=8e2be2&labelColor=1a1a2e" />
+
+</div>
+
+---
+
+### `~/sobre-mim`
+
+```typescript
+const kristyan = {
+  role: "Full-Stack Developer",
+  location: "São Paulo, Brasil",
+  focus: ["Web", "Mobile", "Desktop"],
+  setup: ["zed", "tmux", "kitty"],
+  values: ["Clean Architecture", "Performance First"],
+};
+```
+
+Desenvolvedor full stack autodidata com experiência em aplicações web, mobile, desktop e back-end distribuído. Foco em performance, escalabilidade e design limpo de código. Busco constantemente aprender novas tecnologias e aplicá-las em projetos que unam automação, integração e inovação.
+
+<img src="https://github-readme-streak-stats.herokuapp.com/?user=kristyancarvalho&theme=midnight-purple&hide_border=true&background=0d0d1a&ring=b600ff&fire=9d4edd&currStreakLabel=cdd6f4&sideLabels=cdd6f4" width="100%"/>
+
+---
+
+### `~/stack`
+
+<table width="100%">
+<tr>
+<td valign="top" width="50%">
+
+**Linguagens**
+
+![TypeScript](https://img.shields.io/badge/TypeScript-%233178C6?style=flat-square&logo=typescript&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-%23F7DF1E?style=flat-square&logo=javascript&logoColor=black)
+![Go](https://img.shields.io/badge/Go-%2300ADD8?style=flat-square&logo=go&logoColor=white)
+![Lua](https://img.shields.io/badge/Lua-%232C2D72?style=flat-square&logo=lua&logoColor=white)
+![Shell Script](https://img.shields.io/badge/Shell-%23121011?style=flat-square&logo=gnubash&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-%23E34F26?style=flat-square&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-%231572B6?style=flat-square&logo=css3&logoColor=white)
+
+**Backend**
+
+![Node.js](https://img.shields.io/badge/Node.js-%23339933?style=flat-square&logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express-%23000000?style=flat-square&logo=express&logoColor=white)
+![Fastify](https://img.shields.io/badge/Fastify-%23000000?style=flat-square&logo=fastify&logoColor=white)
+![Gin](https://img.shields.io/badge/Gin-%2300ADD8?style=flat-square&logo=go&logoColor=white)
+![WebSocket](https://img.shields.io/badge/WebSocket-%23010101?style=flat-square&logo=socketdotio&logoColor=white)
+
+**Testes**
+
+![Jest](https://img.shields.io/badge/Jest-%23C21325?style=flat-square&logo=jest&logoColor=white)
+![RSpec](https://img.shields.io/badge/RSpec-%23CC0000?style=flat-square&logo=ruby&logoColor=white)
+![Playwright](https://img.shields.io/badge/Playwright-%2345ba4b?style=flat-square&logo=playwright&logoColor=white)
+
+</td>
+<td valign="top" width="50%">
+
+**Frontend & Mobile**
+
+![React](https://img.shields.io/badge/React-%2361DAFB?style=flat-square&logo=react&logoColor=black)
+![Next.js](https://img.shields.io/badge/Next.js-%23000000?style=flat-square&logo=next.js&logoColor=white)
+![React Native](https://img.shields.io/badge/React_Native-%2361DAFB?style=flat-square&logo=react&logoColor=black)
+![Expo](https://img.shields.io/badge/Expo-%23000020?style=flat-square&logo=expo&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-%23646CFF?style=flat-square&logo=vite&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind-%2306B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
+![Electron](https://img.shields.io/badge/Electron-%2347848F?style=flat-square&logo=electron&logoColor=white)
+
+**Banco de Dados & ORM**
+
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-%23336791?style=flat-square&logo=postgresql&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-%2347A248?style=flat-square&logo=mongodb&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-%23DC382D?style=flat-square&logo=redis&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-%23003B57?style=flat-square&logo=sqlite&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-%232D3748?style=flat-square&logo=prisma&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-%23FFCA28?style=flat-square&logo=firebase&logoColor=black)
+
+**Infra & Ferramentas**
+
+![Docker](https://img.shields.io/badge/Docker-%232496ED?style=flat-square&logo=docker&logoColor=white)
+![Nginx](https://img.shields.io/badge/Nginx-%23009639?style=flat-square&logo=nginx&logoColor=white)
+![Git](https://img.shields.io/badge/Git-%23F05032?style=flat-square&logo=git&logoColor=white)
+![Figma](https://img.shields.io/badge/Figma-%23F24E1E?style=flat-square&logo=figma&logoColor=white)
+
+</td>
+</tr>
 </table>
 
 ---
 
-### 📝 Posts em Destaque
+### `~/blog`
+
+> Últimos posts em [kristyan.dev](https://kristyan.dev)
 
 <!-- BLOG-POST-LIST:START -->
-- [Dicas e Truques para Desenvolvimento com Prisma ORM](https://kristyan.dev/post/bAKM84m7j0bIMK7cVVs6)  
-- [O Retorno Breve do Twitter (X) no Brasil: O Que Aconteceu?](https://kristyan.dev/post/CindnaLftnGFJRdKHg9j)  
-- [Computação Quântica: Como os Desenvolvedores Podem Começar a Se Preparar](https://kristyan.dev/post/XgkK5PQotKrb6GC4B9GZ)  
+- [Dicas e Truques para Desenvolvimento com Prisma ORM](https://kristyan.dev/post/bAKM84m7j0bIMK7cVVs6)
+- [O Retorno Breve do Twitter (X) no Brasil: O Que Aconteceu?](https://kristyan.dev/post/CindnaLftnGFJRdKHg9j)
+- [Computação Quântica: Como os Desenvolvedores Podem Começar a Se Preparar](https://kristyan.dev/post/XgkK5PQotKrb6GC4B9GZ)
 <!-- BLOG-POST-LIST:END -->
 
 ---
 
-### 🧠 Sobre mim
+### `~/atividade`
 
-Sou um entusiasta de tecnologia e desenvolvimento de software, com foco em aplicações web, mobile e desktop. Adoro construir ferramentas úteis, interfaces simples e explorar novas linguagens e frameworks. Trabalho com foco em performance, arquitetura limpa e boas práticas de desenvolvimento.
+<img src="https://github-readme-activity-graph.vercel.app/graph?username=kristyancarvalho&theme=tokyo-night&bg_color=0d0d1a&color=b600ff&line=9d4edd&point=ffffff&hide_border=true&area=true&area_color=b600ff" width="100%"/>
 
----
-
-### 🛠️ Tecnologias que uso
-
-#### 💻 Linguagens
-<p align="left">
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" width="24"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" width="24"/>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Go_Logo_Blue.svg" alt="Go" width="36"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" width="24"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" width="24"/>
-</p>
-
-#### 🖥️ Backend
-<p align="left">
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original-wordmark.svg" alt="Node.js" width="24"/>
-  <img src="https://www.mementotech.in/assets/images/icons/express.png" alt="Express.js" width="24"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastify/fastify-original.svg" alt="Fastify" width="24"/>
-  <img src="https://gin-gonic.com/_astro/gin.D6H2T_2v_ZD2G7l.webp" alt="Gin" width="24"/>
-</p>
-
-#### 🎨 Frontend
-<p align="left">
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" width="24"/>
-  <img src="https://peaks.fr/wp-content/uploads/2024/10/nextjs-icon-dark-background-1-1.png" alt="Next.js" width="24"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg" alt="Vite" width="24"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="TailwindCSS" width="24"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sass/sass-original.svg" alt="SASS" width="24"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/electron/electron-original.svg" alt="Electron" width="24"/>
-</p>
-
-#### 🗄️ Banco de Dados & ORM
-<p align="left">
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original-wordmark.svg" alt="PostgreSQL" width="24"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sqlite/sqlite-original-wordmark.svg" alt="SQLite" width="24"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original-wordmark.svg" alt="MongoDB" width="24"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain-wordmark.svg" alt="Firebase" width="24"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prisma/prisma-original.svg" alt="Prisma" width="24"/>
-  <img src="https://miro.medium.com/v2/resize:fit:1200/1*XBvxUxqycRC8B8KGCuzJVw.png" alt="GORM" width="40"/>
-</p>
-
-#### 🚀 DevOps & Infra
-<p align="left">
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original-wordmark.svg" alt="Docker" width="24"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original-wordmark.svg" alt="Git" width="24"/>
-  <img src="https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg" alt="Postman" width="24"/>
-  <img src="https://pm2.keymetrics.io/assets/pm2-logo-1.png" alt="PM2" width="24"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg" alt="Nginx" width="24"/>
-</p>
-
-#### 🧪 Testes
-<p align="left">
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg" alt="Jest" width="24"/>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Go_Logo_Blue.svg" alt="Go" width="36"/>
-</p>
-
-#### 🎨 UI/UX
-<p align="left">
-  <img src="https://www.vectorlogo.zone/logos/figma/figma-icon.svg" alt="Figma" width="24"/>
-</p>
-
----
-
-<p align="center">Obrigado por visitar meu perfil! 🚀</p>
