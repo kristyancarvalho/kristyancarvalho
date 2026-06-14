@@ -153,7 +153,7 @@ func run() error {
 
 	client := &githubClient{
 		http:  &http.Client{Timeout: 25 * time.Second},
-		token: strings.TrimSpace(os.Getenv("GITHUB_TOKEN")),
+		token: strings.TrimSpace(os.Getenv("GH_TOKEN")),
 	}
 
 	var gh githubData
@@ -744,7 +744,7 @@ func updateReadme(cfg config) error {
 		end += len(endMarker)
 		content = content[:start] + block + content[end:]
 	} else {
-		content = block + "\n\n" + maintenanceSection()
+		content = block
 	}
 	return writeFileIfChanged(readmePath, []byte(strings.TrimSpace(content)+"\n"), 0o644)
 }
@@ -769,21 +769,6 @@ func readmeAssetBlock(cfg config) string {
 
 </div>
 %s`, startMarker, cfg.Links[0].URL, cfg.BlogURL, cfg.GitHubUsername, cfg.GitHubUsername, endMarker)
-}
-
-func maintenanceSection() string {
-	return `<details>
-<summary><code>manutenção do README</code></summary>
-
-Os cards são SVGs gerados localmente a partir de ` + "`readme.config.json`" + `, do RSS do blog e da API pública do GitHub.
-
-` + "```sh" + `
-GITHUB_TOKEN=... go run ./scripts/generate-readme-assets.go
-` + "```" + `
-
-Sem token, o gerador usa a API pública com limite reduzido. Se uma fonte estiver indisponível, o SVG dinâmico anterior é preservado.
-
-</details>`
 }
 
 func writeSVG(path string, data []byte) error {
