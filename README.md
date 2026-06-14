@@ -18,17 +18,41 @@ kristyancarvalho ~ %
 
 ### `~/sobre-mim`
 
-```typescript
-const kristyan = {
-  role: "Full-Stack Developer",
-  location: "São Paulo, Brasil",
-  focus: ["Web", "Mobile", "Desktop"],
-  setup: ["zed", "tmux", "kitty"],
-  values: ["Clean Architecture", "Performance First"],
-};
-```
+<table width="100%">
+<tr>
+<td valign="top" width="60%">
 
-Desenvolvedor full stack autodidata com experiência em aplicações web, mobile, desktop e back-end distribuído. Foco em performance, escalabilidade e design limpo de código. Busco constantemente aprender novas tecnologias e aplicá-las em projetos que unam automação, integração e inovação.
+**Full-Stack Developer em São Paulo.**
+
+Construo aplicações web, mobile e desktop, serviços de backend, automações e ferramentas para desenvolvedores.
+
+`TypeScript` · `Go` · `React` · `React Native` · `Node.js`
+
+</td>
+<td valign="top" width="40%">
+
+**Gosto de construir**
+
+- produtos de ponta a ponta
+- software rápido e explícito
+- ferramentas que removem atrito
+
+</td>
+</tr>
+</table>
+
+#### `~/.config`
+
+![OS: Arch Linux](https://img.shields.io/badge/OS-Arch_Linux-0d0d1a?style=flat-square&logo=archlinux&logoColor=b600ff&labelColor=1a1a2e)
+![WM: Hyprland](https://img.shields.io/badge/WM-Hyprland-0d0d1a?style=flat-square&logo=hyprland&logoColor=b600ff&labelColor=1a1a2e)
+![Terminal: Kitty](https://img.shields.io/badge/terminal-Kitty-0d0d1a?style=flat-square&logo=kitty&logoColor=b600ff&labelColor=1a1a2e)
+![Shell: Zsh](https://img.shields.io/badge/shell-Zsh-0d0d1a?style=flat-square&logo=zsh&logoColor=b600ff&labelColor=1a1a2e)
+![Multiplexer: tmux](https://img.shields.io/badge/multiplexer-tmux-0d0d1a?style=flat-square&logo=tmux&logoColor=b600ff&labelColor=1a1a2e)
+![Editor: Neovim](https://img.shields.io/badge/editor-Neovim-0d0d1a?style=flat-square&logo=neovim&logoColor=b600ff&labelColor=1a1a2e)
+![Go](https://img.shields.io/badge/runtime-Go-0d0d1a?style=flat-square&logo=go&logoColor=b600ff&labelColor=1a1a2e)
+![Node.js](https://img.shields.io/badge/runtime-Node.js-0d0d1a?style=flat-square&logo=nodedotjs&logoColor=b600ff&labelColor=1a1a2e)
+![Docker](https://img.shields.io/badge/containers-Docker-0d0d1a?style=flat-square&logo=docker&logoColor=b600ff&labelColor=1a1a2e)
+![Git](https://img.shields.io/badge/versionamento-Git-0d0d1a?style=flat-square&logo=git&logoColor=b600ff&labelColor=1a1a2e)
 
 <img src="https://github-readme-streak-stats.herokuapp.com/?user=kristyancarvalho&theme=midnight-purple&hide_border=true&background=0d0d1a&ring=b600ff&fire=9d4edd&currStreakLabel=cdd6f4&sideLabels=cdd6f4" width="100%"/>
 
