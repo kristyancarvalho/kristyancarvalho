@@ -52,8 +52,12 @@
       "value": "Neovim"
     },
     {
-      "key": "runtimes",
-      "value": "Go · Node.js"
+      "key": "runtime",
+      "value": "Go"
+    },
+    {
+      "key": "runtime",
+      "value": "Node.js"
     },
     {
       "key": "containers",
@@ -67,7 +71,7 @@
   "stack": [
     {
       "label": "Linguagens",
-      "items": ["TypeScript", "JavaScript", "Go", "Lua", "Shell", "HTML", "CSS"]
+      "items": ["TypeScript", "JavaScript", "Go", "Lua", "Shell", "HTML5", "CSS3"]
     },
     {
       "label": "Backend",

@@ -133,6 +133,89 @@ type svgBuilder struct {
 	height int
 }
 
+type svgTheme struct {
+	Background   string
+	Surface      string
+	SurfaceAlt   string
+	Border       string
+	Accent       string
+	AccentStrong string
+	AccentSoft   string
+	ActivityLow  string
+	ActivityMid  string
+	Text         string
+	Muted        string
+	Dim          string
+	Success      string
+	Warning      string
+	Danger       string
+}
+
+type icon struct {
+	Path     string
+	Stroke   bool
+	Monogram string
+}
+
+var readmeTheme = svgTheme{
+	Background:   "#0d1117",
+	Surface:      "#111827",
+	SurfaceAlt:   "#172033",
+	Border:       "#263244",
+	Accent:       "#38bdf8",
+	AccentStrong: "#0ea5e9",
+	AccentSoft:   "#7dd3fc",
+	ActivityLow:  "#164e63",
+	ActivityMid:  "#0369a1",
+	Text:         "#dbeafe",
+	Muted:        "#93a4b8",
+	Dim:          "#64748b",
+	Success:      "#22c55e",
+	Warning:      "#facc15",
+	Danger:       "#f87171",
+}
+
+var iconRegistry = map[string]icon{
+	"arch linux":   {Path: "M12 2 2.5 21h4.2L12 11.8 17.3 21h4.2L12 2zm0 5.2 2.1 4.1-2.1-1.5-2.1 1.5L12 7.2z"},
+	"hyprland":     {Path: "M5 4h14v16H5V4zm2 3v10h10V7H7zm2 2h6v2H9V9zm0 4h4v2H9v-2z"},
+	"kitty":        {Path: "M4 5h16v14H4V5zm2 2v10h12V7H6zm1 3 3 3-3 3 1.4 1.4 4.4-4.4-4.4-4.4L7 10zm6 5h4v-2h-4v2z"},
+	"zsh":          {Path: "M4 6h16v12H4V6zm2 2v8h12V8H6zm1.2 2 2 2-2 2 1.2 1.2 3.2-3.2-3.2-3.2L7.2 10zM12 15h4v-1.8h-4V15z"},
+	"tmux":         {Path: "M4 4h16v16H4V4zm2 2v5h5V6H6zm7 0v5h5V6h-5zm-7 7v5h5v-5H6zm7 0v5h5v-5h-5z"},
+	"neovim":       {Path: "M4 5.5 8 3v13.5l-4 3V5.5zm5-.8L13 2l7 5v11l-4 4-7-12.2V4.7zm4 3.1 3 6V8.2l-3-2.1v1.7z"},
+	"go":           {Monogram: "Go"},
+	"node.js":      {Path: "M12 2 21 7v10l-9 5-9-5V7l9-5zm0 2.4L5.2 8.2v7.6l6.8 3.8 6.8-3.8V8.2L12 4.4z"},
+	"docker":       {Path: "M4 8h3v3H4V8zm4 0h3v3H8V8zm4 0h3v3h-3V8zm-4-4h3v3H8V4zm4 0h3v3h-3V4zm4 4h3v3h-3V8zM3 12h17c-.4 4.6-3.4 7-8.7 7C6.7 19 4 16.7 3 12z"},
+	"git":          {Path: "M7 3a2 2 0 0 1 1.7 3l3.6 3.6a2 2 0 0 1 2.7 2.7l2 2a2 2 0 1 1-1.4 1.4l-2-2a2 2 0 0 1-2.7-2.7L7.3 7.4A2 2 0 1 1 7 3zm0 1.4a.6.6 0 1 0 0 1.2.6.6 0 0 0 0-1.2zm6.7 6.3a.6.6 0 1 0 0 1.2.6.6 0 0 0 0-1.2zm3.4 4.1a.6.6 0 1 0 0 1.2.6.6 0 0 0 0-1.2z"},
+	"typescript":   {Monogram: "TS"},
+	"javascript":   {Monogram: "JS"},
+	"lua":          {Monogram: "Lu"},
+	"shell":        {Path: "M4 5h16v14H4V5zm2 2v10h12V7H6zm1 3 3 3-3 3 1.4 1.4 4.4-4.4-4.4-4.4L7 10zm6 5h4v-2h-4v2z"},
+	"html5":        {Monogram: "H5"},
+	"css3":         {Monogram: "C3"},
+	"express":      {Monogram: "Ex"},
+	"fastify":      {Monogram: "Fa"},
+	"gin":          {Monogram: "Gi"},
+	"websocket":    {Path: "M6 7a7 7 0 0 1 11.8 3.2l-1.7 1A5 5 0 0 0 7.4 9L10 9v2H4V5h2v2zm12 10a7 7 0 0 1-11.8-3.2l1.7-1A5 5 0 0 0 16.6 15H14v-2h6v6h-2v-2z"},
+	"jest":         {Monogram: "Je"},
+	"rspec":        {Path: "M12 2 21 9l-9 13L3 9l9-7zm0 3.1L6.2 9.5 12 17.9l5.8-8.4L12 5.1z"},
+	"playwright":   {Path: "M4 5h16v14H4V5zm2 2v10h12V7H6zm2.2 5.1 2.1 2.1 4.2-4.2 1.3 1.3-5.5 5.5-3.4-3.4 1.3-1.3z"},
+	"react":        {Path: "M12 10.3a1.7 1.7 0 1 1 0 3.4 1.7 1.7 0 0 1 0-3.4zm0-4.8c4.8 0 8.7 2.9 8.7 6.5s-3.9 6.5-8.7 6.5S3.3 15.6 3.3 12 7.2 5.5 12 5.5zm0 2c-3.8 0-6.7 2.2-6.7 4.5s2.9 4.5 6.7 4.5 6.7-2.2 6.7-4.5S15.8 7.5 12 7.5zm5.6-1.7c2.4 1.4 1.8 5.9-.6 10s-5.9 7.1-8.3 5.7-1.8-5.9.6-10 5.9-7.1 8.3-5.7zm-1 1.7c-1.3-.8-3.8 1.2-5.6 4.9s-2 6.7-1.3 7.5c1.3.8 3.8-1.2 5.6-4.9s2-6.7 1.3-7.5z"},
+	"next.js":      {Monogram: "Nx"},
+	"react native": {Monogram: "RN"},
+	"expo":         {Monogram: "Xp"},
+	"vite":         {Path: "M5 3h14l-7 18L5 3zm3 3 4 10 4-10H8z"},
+	"tailwindcss":  {Path: "M12 6c-3 0-4.9 1.5-5.7 4.5 1.1-1.5 2.5-2.1 4-1.7 2 .5 2.8 2.7 5.7 2.7 3 0 4.9-1.5 5.7-4.5-1.1 1.5-2.5 2.1-4 1.7C15.7 8.2 14.9 6 12 6zm-5.7 6c-3 0-4.9 1.5-5.7 4.5 1.1-1.5 2.5-2.1 4-1.7 2 .5 2.8 2.7 5.7 2.7 3 0 4.9-1.5 5.7-4.5-1.1 1.5-2.5 2.1-4 1.7-2-.5-2.8-2.7-5.7-2.7z"},
+	"electron":     {Monogram: "El"},
+	"postgresql":   {Monogram: "Pg"},
+	"mongodb":      {Path: "M12 2c4 4.2 5 8.1 3.4 11.7-1 2.2-2.2 3.6-3.4 4.6-1.2-1-2.4-2.4-3.4-4.6C7 10.1 8 6.2 12 2zm0 4.2c-1.8 2.7-2.2 5-1.1 7.1.3.6.7 1.2 1.1 1.7.4-.5.8-1.1 1.1-1.7 1.1-2.1.7-4.4-1.1-7.1zM11 18h2v4h-2v-4z"},
+	"redis":        {Path: "M12 3 21 7l-9 4-9-4 9-4zm-7.8 7L12 13.5 19.8 10 21 12l-9 4-9-4 1.2-2zm0 5L12 18.5l7.8-3.5 1.2 2-9 4-9-4 1.2-2z"},
+	"sqlite":       {Monogram: "Sq"},
+	"prisma":       {Path: "M13 2 21 19l-13 3L3 17 13 2zm-.5 5.2-5.8 9.2 2.1 2.1 8.8-2-5.1-9.3z"},
+	"firebase":     {Path: "M5 20 8 4l4 7 3-9 4 18-7 3-7-3zm4.1-5.9-.7 3.8 3.6 1.5 3.8-1.6-1.5-7.7-2 5.9-3.2-1.9z"},
+	"nginx":        {Monogram: "Nx"},
+	"figma":        {Path: "M8 2h4v8H8a4 4 0 0 1 0-8zm0 2a2 2 0 1 0 0 4h2V4H8zm4-2h4a4 4 0 0 1 0 8h-4V2zm2 2v4h2a2 2 0 1 0 0-4h-2zM8 10h4v8H8a4 4 0 0 1 0-8zm0 2a2 2 0 1 0 0 4h2v-4H8zm4-2h4a4 4 0 1 1-4 4v-4zm2 2v2a2 2 0 1 0 2-2h-2zM8 18h4v2a4 4 0 1 1-4-4h4v2H8a2 2 0 1 0 2 2H8v-2z"},
+}
+
 func main() {
 	if err := run(); err != nil {
 		log.Fatalf("readme generator: %v", err)
@@ -336,16 +419,17 @@ func newSVG(height int, title, description, section string) *svgBuilder {
 	s := &svgBuilder{width: 960, height: height}
 	fmt.Fprintf(&s.Buffer, `<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" role="img" aria-labelledby="title desc">`, s.width, s.height, s.width, s.height)
 	fmt.Fprintf(&s.Buffer, `<title id="title">%s</title><desc id="desc">%s</desc>`, esc(title), esc(description))
-	s.WriteString(`<style>
-		.text{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;fill:#cdd6f4}
-		.muted{fill:#8b8ba7}.accent{fill:#b600ff}.cyan{fill:#00add8}
+	fmt.Fprintf(&s.Buffer, `<style>
+		.text{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;fill:%s}
+		.muted{fill:%s}.dim{fill:%s}.accent{fill:%s}.strong{fill:%s}.soft{fill:%s}
 		.label{font-size:15px;font-weight:700}.body{font-size:15px}.small{font-size:13px}
-	</style>`)
-	s.WriteString(`<rect width="960" height="100%" rx="18" fill="#0d0d1a"/>`)
-	s.WriteString(`<rect x="1" y="1" width="958" height="100%" rx="17" fill="none" stroke="#2a2a40"/>`)
-	s.WriteString(`<circle cx="28" cy="28" r="5" fill="#b600ff"/><circle cx="46" cy="28" r="5" fill="#9d4edd"/><circle cx="64" cy="28" r="5" fill="#00add8"/>`)
+		.icon-label{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:8px;font-weight:700;text-anchor:middle}
+	</style>`, readmeTheme.Text, readmeTheme.Muted, readmeTheme.Dim, readmeTheme.Accent, readmeTheme.AccentStrong, readmeTheme.AccentSoft)
+	fmt.Fprintf(&s.Buffer, `<rect width="960" height="100%%" rx="18" fill="%s"/>`, readmeTheme.Background)
+	fmt.Fprintf(&s.Buffer, `<rect x="1" y="1" width="958" height="100%%" rx="17" fill="none" stroke="%s"/>`, readmeTheme.Border)
+	fmt.Fprintf(&s.Buffer, `<circle cx="28" cy="28" r="5" fill="%s"/><circle cx="46" cy="28" r="5" fill="%s"/><circle cx="64" cy="28" r="5" fill="%s"/>`, readmeTheme.AccentStrong, readmeTheme.Accent, readmeTheme.AccentSoft)
 	s.text(88, 34, "text label", section)
-	s.line(20, 52, 940, 52, "#2a2a40", 1)
+	s.line(20, 52, 940, 52, readmeTheme.Border, 1)
 	return s
 }
 
@@ -368,13 +452,59 @@ func (s *svgBuilder) line(x1, y1, x2, y2 int, color string, width int) {
 
 func (s *svgBuilder) pill(x, y int, value string, accent bool) int {
 	width := runeLen(value)*8 + 24
-	fill, stroke, class := "#1a1a2e", "#2a2a40", "text small"
+	fill, stroke, class := readmeTheme.SurfaceAlt, readmeTheme.Border, "text small"
 	if accent {
-		fill, stroke, class = "#24112f", "#b600ff", "text small"
+		fill, stroke, class = readmeTheme.Surface, readmeTheme.AccentStrong, "text small"
 	}
 	s.rect(x, y, width, 30, 8, fill, stroke)
 	s.text(x+12, y+20, class, value)
 	return width
+}
+
+func (s *svgBuilder) icon(name string, x, y, size int, color string) {
+	entry, ok := iconRegistry[strings.ToLower(name)]
+	if !ok {
+		entry = icon{Monogram: iconMonogram(name)}
+	}
+	if entry.Monogram != "" {
+		fmt.Fprintf(&s.Buffer, `<text x="%d" y="%d" class="icon-label" fill="%s">%s</text>`, x+size/2, y+size/2+3, color, esc(entry.Monogram))
+		return
+	}
+	scale := float64(size) / 24
+	if entry.Stroke {
+		fmt.Fprintf(&s.Buffer, `<path d="%s" transform="translate(%d %d) scale(%.4f)" fill="none" stroke="%s" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>`, entry.Path, x, y, scale, color)
+		return
+	}
+	fmt.Fprintf(&s.Buffer, `<path d="%s" transform="translate(%d %d) scale(%.4f)" fill="%s" fill-rule="evenodd"/>`, entry.Path, x, y, scale, color)
+}
+
+func (s *svgBuilder) iconPill(x, y int, name string) int {
+	width := iconPillWidth(name)
+	s.rect(x, y, width, 32, 8, readmeTheme.SurfaceAlt, readmeTheme.Border)
+	s.icon(name, x+9, y+8, 16, readmeTheme.AccentSoft)
+	s.text(x+32, y+21, "text small", name)
+	return width
+}
+
+func iconPillWidth(value string) int {
+	return runeLen(value)*7 + 44
+}
+
+func iconMonogram(value string) string {
+	words := strings.FieldsFunc(value, func(r rune) bool {
+		return r == ' ' || r == '.' || r == '-' || r == '&'
+	})
+	if len(words) > 1 {
+		return strings.ToUpper(string([]rune(words[0])[0]) + string([]rune(words[1])[0]))
+	}
+	runes := []rune(value)
+	if len(runes) == 0 {
+		return "?"
+	}
+	if len(runes) > 2 {
+		runes = runes[:2]
+	}
+	return strings.ToUpper(string(runes))
 }
 
 func renderHeader(cfg config, profile githubProfile, fresh bool) []byte {
@@ -389,7 +519,7 @@ func renderHeader(cfg config, profile githubProfile, fresh bool) []byte {
 	if fresh {
 		s.text(730, 100, "text small muted", "github")
 		s.text(730, 128, "text label accent", fmt.Sprintf("%d repos", profile.PublicRepos))
-		s.text(730, 154, "text label cyan", fmt.Sprintf("%d seguidores", profile.Followers))
+		s.text(730, 154, "text label soft", fmt.Sprintf("%d seguidores", profile.Followers))
 	}
 	return s.finish()
 }
@@ -403,7 +533,7 @@ func renderAbout(cfg config) []byte {
 		}
 		s.text(38, 92+index*27, class, line)
 	}
-	s.line(600, 76, 600, 230, "#2a2a40", 1)
+	s.line(600, 76, 600, 230, readmeTheme.Border, 1)
 	s.text(630, 94, "text label accent", "gosto de construir")
 	for index, item := range cfg.Focus {
 		s.text(630, 128+index*31, "text body", "› "+item)
@@ -416,21 +546,22 @@ func renderAbout(cfg config) []byte {
 }
 
 func renderConfig(cfg config) []byte {
-	s := newSVG(315, "Configuração", "Ambiente de desenvolvimento e ferramentas", "~/.config")
+	s := newSVG(225, "Configuração", "Ambiente de desenvolvimento e ferramentas", "~/.config")
 	for index, item := range cfg.Environment {
-		column := index % 3
-		row := index / 3
-		x := 38 + column*306
-		y := 78 + row*68
-		s.rect(x, y, 274, 50, 9, "#131326", "#2a2a40")
-		s.text(x+14, y+21, "text small accent", item.Key)
-		s.text(x+14, y+41, "text body", item.Value)
+		column := index % 5
+		row := index / 5
+		x := 38 + column*177
+		y := 76 + row*68
+		s.rect(x, y, 165, 54, 9, readmeTheme.Surface, readmeTheme.Border)
+		s.icon(item.Value, x+12, y+16, 22, readmeTheme.Accent)
+		s.text(x+44, y+21, "text small accent", item.Key)
+		s.text(x+44, y+42, "text small", item.Value)
 	}
 	return s.finish()
 }
 
 func renderStack(cfg config) []byte {
-	s := newSVG(555, "Stack", "Tecnologias agrupadas por área", "~/stack")
+	s := newSVG(520, "Stack", "Tecnologias agrupadas por área", "~/stack")
 	positions := [][2]int{{38, 78}, {38, 222}, {38, 366}, {500, 78}, {500, 254}, {500, 430}}
 	for index, group := range cfg.Stack {
 		if index >= len(positions) {
@@ -446,12 +577,12 @@ func renderStack(cfg config) []byte {
 func renderPills(s *svgBuilder, startX, startY, maxWidth int, items []string) {
 	x, y := startX, startY
 	for _, item := range items {
-		width := runeLen(item)*8 + 24
+		width := iconPillWidth(item)
 		if x > startX && x+width > startX+maxWidth {
 			x = startX
-			y += 40
+			y += 42
 		}
-		x += s.pill(x, y, item, false) + 8
+		x += s.iconPill(x, y, item) + 8
 	}
 }
 
@@ -464,7 +595,7 @@ func renderBlog(cfg config, posts []blogPost, fresh bool) []byte {
 	}
 	for index, post := range posts {
 		y := 76 + index*86
-		s.rect(38, y, 884, 68, 10, "#131326", "#2a2a40")
+		s.rect(38, y, 884, 68, 10, readmeTheme.Surface, readmeTheme.Border)
 		s.text(54, y+25, "text label", truncate(post.Title, 88))
 		date := formatRSSDate(post.Published)
 		description := stripHTML(post.Description)
@@ -515,7 +646,7 @@ func renderGitHubStats(cfg config, data githubData, fresh bool) []byte {
 		s.text(500, y+22, "text small muted", fmt.Sprintf("%s · ★ %d · %s", detail, repo.Stars, relativeDate(repo.UpdatedAt)))
 	}
 
-	s.line(38, 372, 922, 372, "#2a2a40", 1)
+	s.line(38, 372, 922, 372, readmeTheme.Border, 1)
 	s.text(38, 405, "text label accent", "projetos em destaque")
 	x := 240
 	byName := make(map[string]repository, len(data.Repos))
@@ -533,7 +664,7 @@ func renderGitHubStats(cfg config, data githubData, fresh bool) []byte {
 }
 
 func metric(s *svgBuilder, x, y int, label, value string) {
-	s.rect(x, y, 190, 64, 10, "#131326", "#2a2a40")
+	s.rect(x, y, 190, 64, 10, readmeTheme.Surface, readmeTheme.Border)
 	s.text(x+15, y+24, "text small muted", label)
 	s.text(x+15, y+50, "text label accent", value)
 }
@@ -565,12 +696,12 @@ func renderLanguageBars(s *svgBuilder, languages map[string]int) {
 			percent = item.Count * 100 / total
 		}
 		s.text(38, y+13, "text small", truncate(item.Name, 14))
-		s.rect(150, y, 260, 14, 7, "#1a1a2e", "#2a2a40")
+		s.rect(150, y, 260, 14, 7, readmeTheme.SurfaceAlt, readmeTheme.Border)
 		width := percent * 260 / 100
 		if width < 8 {
 			width = 8
 		}
-		s.rect(150, y, width, 14, 7, "#b600ff", "#b600ff")
+		s.rect(150, y, width, 14, 7, readmeTheme.AccentStrong, readmeTheme.AccentStrong)
 		s.text(420, y+13, "text small muted", fmt.Sprintf("%d%%", percent))
 	}
 }
@@ -626,7 +757,7 @@ func renderActivity(cfg config, events []githubEvent, fresh bool) []byte {
 		}
 	}
 
-	s.line(490, 76, 490, 350, "#2a2a40", 1)
+	s.line(490, 76, 490, 350, readmeTheme.Border, 1)
 	s.text(520, 86, "text label accent", "atividade recente")
 	activities := meaningfulActivities(events, cfg.ActivityLimit)
 	for index, activity := range activities {
@@ -713,18 +844,18 @@ func translateAction(action string) string {
 
 func activityColor(count, max int) string {
 	if count == 0 {
-		return "#1a1a2e"
+		return readmeTheme.SurfaceAlt
 	}
 	ratio := count * 4 / max
 	switch ratio {
 	case 0, 1:
-		return "#4b1763"
+		return readmeTheme.ActivityLow
 	case 2:
-		return "#70208f"
+		return readmeTheme.ActivityMid
 	case 3:
-		return "#9327bb"
+		return readmeTheme.AccentStrong
 	default:
-		return "#b600ff"
+		return readmeTheme.Accent
 	}
 }
 

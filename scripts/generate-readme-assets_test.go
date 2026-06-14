@@ -51,3 +51,31 @@ func TestRenderedSVGIsSelfContained(t *testing.T) {
 		t.Fatal("rendered output is not a complete SVG document")
 	}
 }
+
+func TestConfigAndStackRenderIcons(t *testing.T) {
+	cfg := config{
+		Environment: []configItem{{Key: "os", Value: "Arch Linux"}},
+		Stack:       []stackGroup{{Label: "Linguagens", Items: []string{"TypeScript"}}},
+	}
+
+	for name, rendered := range map[string]string{
+		"config": string(renderConfig(cfg)),
+		"stack":  string(renderStack(cfg)),
+	} {
+		if !strings.Contains(rendered, "<path") && !strings.Contains(rendered, "icon-label") {
+			t.Fatalf("%s card does not contain an inline icon", name)
+		}
+		if strings.Contains(rendered, "<image") {
+			t.Fatalf("%s card contains an external image element", name)
+		}
+	}
+}
+
+func TestThemeDoesNotContainLegacyPurple(t *testing.T) {
+	rendered := string(renderHeader(config{}, githubProfile{}, false))
+	for _, color := range []string{"#b600ff", "#9d4edd", "#4b1763", "#70208f", "#9327bb"} {
+		if strings.Contains(strings.ToLower(rendered), color) {
+			t.Fatalf("rendered SVG contains legacy color %s", color)
+		}
+	}
+}
