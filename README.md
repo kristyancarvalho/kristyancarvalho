@@ -101,12 +101,12 @@ Desenvolvedor full stack autodidata com experiência em aplicações web, mobile
 
 ### `~/blog`
 
-> Últimos posts em [kristyan.dev](https://kristyan.dev)
+> Últimos posts em [blog.kristyan.dev](https://blog.kristyan.dev)
 
 <!-- BLOG-POST-LIST:START -->
-- [Dicas e Truques para Desenvolvimento com Prisma ORM](https://kristyan.dev/post/bAKM84m7j0bIMK7cVVs6)
-- [O Retorno Breve do Twitter (X) no Brasil: O Que Aconteceu?](https://kristyan.dev/post/CindnaLftnGFJRdKHg9j)
-- [Computação Quântica: Como os Desenvolvedores Podem Começar a Se Preparar](https://kristyan.dev/post/XgkK5PQotKrb6GC4B9GZ)
+- [AUR Parte 2: O Caos Continua; Agora são 1.500 Pacotes Afetados](https://blog.kristyan.dev/posts/aur-parte-2-o-caos-continua-agora-s%C3%A3o-1500-pacotes-afetados)
+- [Fable 5 saiu do ar. Rio 3 Open ainda precisa de auditoria](https://blog.kristyan.dev/posts/fable-5-saiu-do-ar-rio-3-open-ainda-precisa-de-auditoria)
+- [GitHub Bloqueado: A Internet Brasileira Virou um Ambiente Hostil para Desenvolvedores](https://blog.kristyan.dev/posts/github-bloqueado-a-internet-brasileira-virou-um-ambiente-hostil-para-desenvolvedores)
 <!-- BLOG-POST-LIST:END -->
 
 ---
