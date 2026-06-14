@@ -107,3 +107,28 @@ func TestThemeDoesNotContainLegacyPurple(t *testing.T) {
 		}
 	}
 }
+
+func TestReadmeAssetBlockUsesContentVersions(t *testing.T) {
+	cfg := config{
+		GitHubUsername: "kristyancarvalho",
+		BlogURL:        "https://blog.kristyan.dev",
+		Links:          []link{{URL: "https://kristyan.dev"}},
+	}
+	versions := map[string]string{
+		"header.svg":       "header123",
+		"about.svg":        "about123",
+		"config.svg":       "config123",
+		"stack.svg":        "stack123",
+		"blog.svg":         "blog123",
+		"github-stats.svg": "stats123",
+		"activity.svg":     "activity123",
+	}
+
+	rendered := readmeAssetBlock(cfg, versions)
+	for name, version := range versions {
+		want := "./assets/readme/" + name + "?v=" + version
+		if !strings.Contains(rendered, want) {
+			t.Fatalf("README block does not contain versioned asset URL %q", want)
+		}
+	}
+}

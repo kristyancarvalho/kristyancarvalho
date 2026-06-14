@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"crypto/sha256"
 	"encoding/json"
 	"encoding/xml"
 	"errors"
@@ -908,7 +909,11 @@ func updateReadme(cfg config) error {
 	if err != nil && !errors.Is(err, os.ErrNotExist) {
 		return fmt.Errorf("read README: %w", err)
 	}
-	block := readmeAssetBlock(cfg)
+	versions, err := readmeAssetVersions()
+	if err != nil {
+		return err
+	}
+	block := readmeAssetBlock(cfg, versions)
 	content := string(current)
 	if strings.Contains(content, startMarker) && strings.Contains(content, endMarker) {
 		start := strings.Index(content, startMarker)
@@ -924,26 +929,65 @@ func updateReadme(cfg config) error {
 	return writeFileIfChanged(readmePath, []byte(strings.TrimSpace(content)+"\n"), 0o644)
 }
 
-func readmeAssetBlock(cfg config) string {
+func readmeAssetVersions() (map[string]string, error) {
+	names := []string{
+		"header.svg",
+		"about.svg",
+		"config.svg",
+		"stack.svg",
+		"blog.svg",
+		"github-stats.svg",
+		"activity.svg",
+	}
+	versions := make(map[string]string, len(names))
+	for _, name := range names {
+		data, err := os.ReadFile(filepath.Join(assetDir, name))
+		if err != nil {
+			return nil, fmt.Errorf("version README asset %s: %w", name, err)
+		}
+		sum := sha256.Sum256(data)
+		versions[name] = fmt.Sprintf("%x", sum[:6])
+	}
+	return versions, nil
+}
+
+func readmeAssetBlock(cfg config, versions map[string]string) string {
+	assetURL := func(name string) string {
+		return fmt.Sprintf("./assets/readme/%s?v=%s", name, versions[name])
+	}
 	return fmt.Sprintf(`%s
 <div align="center">
 
-<a href="%s"><img src="./assets/readme/header.svg" width="100%%" alt="Kristyan Carvalho — Full-Stack Developer" /></a>
+<a href="%s"><img src="%s" width="100%%" alt="Kristyan Carvalho — Full-Stack Developer" /></a>
 
-<img src="./assets/readme/about.svg" width="100%%" alt="Sobre mim" />
+<img src="%s" width="100%%" alt="Sobre mim" />
 
-<img src="./assets/readme/config.svg" width="100%%" alt="Configuração do ambiente de desenvolvimento" />
+<img src="%s" width="100%%" alt="Configuração do ambiente de desenvolvimento" />
 
-<img src="./assets/readme/stack.svg" width="100%%" alt="Stack de tecnologias" />
+<img src="%s" width="100%%" alt="Stack de tecnologias" />
 
-<a href="%s"><img src="./assets/readme/blog.svg" width="100%%" alt="Últimos posts do blog" /></a>
+<a href="%s"><img src="%s" width="100%%" alt="Últimos posts do blog" /></a>
 
-<a href="https://github.com/%s?tab=repositories"><img src="./assets/readme/github-stats.svg" width="100%%" alt="Estatísticas dos repositórios públicos no GitHub" /></a>
+<a href="https://github.com/%s?tab=repositories"><img src="%s" width="100%%" alt="Estatísticas dos repositórios públicos no GitHub" /></a>
 
-<a href="https://github.com/%s?tab=overview"><img src="./assets/readme/activity.svg" width="100%%" alt="Atividade pública recente no GitHub" /></a>
+<a href="https://github.com/%s?tab=overview"><img src="%s" width="100%%" alt="Atividade pública recente no GitHub" /></a>
 
 </div>
-%s`, startMarker, cfg.Links[0].URL, cfg.BlogURL, cfg.GitHubUsername, cfg.GitHubUsername, endMarker)
+%s`,
+		startMarker,
+		cfg.Links[0].URL,
+		assetURL("header.svg"),
+		assetURL("about.svg"),
+		assetURL("config.svg"),
+		assetURL("stack.svg"),
+		cfg.BlogURL,
+		assetURL("blog.svg"),
+		cfg.GitHubUsername,
+		assetURL("github-stats.svg"),
+		cfg.GitHubUsername,
+		assetURL("activity.svg"),
+		endMarker,
+	)
 }
 
 func writeSVG(path string, data []byte) error {
