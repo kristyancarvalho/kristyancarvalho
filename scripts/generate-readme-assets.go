@@ -21,12 +21,13 @@ import (
 )
 
 const (
-	configPath   = "readme.config.json"
-	readmePath   = "README.md"
-	assetDir     = "assets/readme"
-	startMarker  = "<!-- README-ASSETS:START -->"
-	endMarker    = "<!-- README-ASSETS:END -->"
-	githubAPIURL = "https://api.github.com"
+	configPath       = "readme.config.json"
+	readmePath       = "README.md"
+	assetDir         = "assets/readme"
+	iconRegistryPath = "assets/readme/icons.json"
+	startMarker      = "<!-- README-ASSETS:START -->"
+	endMarker        = "<!-- README-ASSETS:END -->"
+	githubAPIURL     = "https://api.github.com"
 )
 
 type config struct {
@@ -133,6 +134,67 @@ type svgBuilder struct {
 	height int
 }
 
+type svgTheme struct {
+	Background   string
+	Surface      string
+	SurfaceAlt   string
+	Border       string
+	Accent       string
+	AccentStrong string
+	AccentSoft   string
+	ActivityLow  string
+	ActivityMid  string
+	Text         string
+	Muted        string
+	Dim          string
+	Success      string
+	Warning      string
+	Danger       string
+}
+
+type icon struct {
+	Name    string     `json:"name"`
+	ViewBox string     `json:"viewBox"`
+	Paths   []iconPath `json:"paths"`
+	Source  string     `json:"source"`
+	License string     `json:"license"`
+}
+
+type iconPath struct {
+	D string `json:"d"`
+}
+
+type iconRegistryFile struct {
+	Icons map[string]icon `json:"icons"`
+}
+
+type iconViewBox struct {
+	MinX   float64
+	MinY   float64
+	Width  float64
+	Height float64
+}
+
+var readmeTheme = svgTheme{
+	Background:   "#0d1117",
+	Surface:      "#111827",
+	SurfaceAlt:   "#172033",
+	Border:       "#263244",
+	Accent:       "#38bdf8",
+	AccentStrong: "#0ea5e9",
+	AccentSoft:   "#7dd3fc",
+	ActivityLow:  "#164e63",
+	ActivityMid:  "#0369a1",
+	Text:         "#dbeafe",
+	Muted:        "#93a4b8",
+	Dim:          "#64748b",
+	Success:      "#22c55e",
+	Warning:      "#facc15",
+	Danger:       "#f87171",
+}
+
+var iconRegistry map[string]icon
+
 func main() {
 	if err := run(); err != nil {
 		log.Fatalf("readme generator: %v", err)
@@ -142,6 +204,13 @@ func main() {
 func run() error {
 	cfg, err := loadConfig(configPath)
 	if err != nil {
+		return err
+	}
+	iconRegistry, err = loadIconRegistry(iconRegistryPath)
+	if err != nil {
+		return err
+	}
+	if err := validateConfiguredIcons(cfg, iconRegistry); err != nil {
 		return err
 	}
 	if err := os.MkdirAll(assetDir, 0o755); err != nil {
@@ -244,6 +313,56 @@ func loadConfig(path string) (config, error) {
 	return cfg, nil
 }
 
+func loadIconRegistry(path string) (map[string]icon, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf("read icon registry: %w", err)
+	}
+	var registry iconRegistryFile
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(&registry); err != nil {
+		return nil, fmt.Errorf("parse icon registry: %w", err)
+	}
+	if len(registry.Icons) == 0 {
+		return nil, errors.New("icon registry is empty")
+	}
+	for key, icon := range registry.Icons {
+		if strings.TrimSpace(icon.ViewBox) == "" || len(icon.Paths) == 0 {
+			return nil, fmt.Errorf("icon %q has no viewBox or path data", key)
+		}
+		if _, err := parseViewBox(icon.ViewBox); err != nil {
+			return nil, fmt.Errorf("icon %q: %w", key, err)
+		}
+	}
+	return registry.Icons, nil
+}
+
+func validateConfiguredIcons(cfg config, registry map[string]icon) error {
+	var missing []string
+	seen := map[string]bool{}
+	check := func(name string) {
+		key := strings.ToLower(strings.TrimSpace(name))
+		if _, ok := registry[key]; !ok && !seen[key] {
+			seen[key] = true
+			missing = append(missing, name)
+		}
+	}
+	for _, item := range cfg.Environment {
+		check(item.Value)
+	}
+	for _, group := range cfg.Stack {
+		for _, item := range group.Items {
+			check(item)
+		}
+	}
+	if len(missing) > 0 {
+		sort.Strings(missing)
+		return fmt.Errorf("icon registry is missing: %s", strings.Join(missing, ", "))
+	}
+	return nil
+}
+
 func (client *githubClient) get(ctx context.Context, path string, target any) error {
 	request, err := http.NewRequestWithContext(ctx, http.MethodGet, githubAPIURL+path, nil)
 	if err != nil {
@@ -336,16 +455,16 @@ func newSVG(height int, title, description, section string) *svgBuilder {
 	s := &svgBuilder{width: 960, height: height}
 	fmt.Fprintf(&s.Buffer, `<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" role="img" aria-labelledby="title desc">`, s.width, s.height, s.width, s.height)
 	fmt.Fprintf(&s.Buffer, `<title id="title">%s</title><desc id="desc">%s</desc>`, esc(title), esc(description))
-	s.WriteString(`<style>
-		.text{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;fill:#cdd6f4}
-		.muted{fill:#8b8ba7}.accent{fill:#b600ff}.cyan{fill:#00add8}
+	fmt.Fprintf(&s.Buffer, `<style>
+		.text{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;fill:%s}
+		.muted{fill:%s}.dim{fill:%s}.accent{fill:%s}.strong{fill:%s}.soft{fill:%s}
 		.label{font-size:15px;font-weight:700}.body{font-size:15px}.small{font-size:13px}
-	</style>`)
-	s.WriteString(`<rect width="960" height="100%" rx="18" fill="#0d0d1a"/>`)
-	s.WriteString(`<rect x="1" y="1" width="958" height="100%" rx="17" fill="none" stroke="#2a2a40"/>`)
-	s.WriteString(`<circle cx="28" cy="28" r="5" fill="#b600ff"/><circle cx="46" cy="28" r="5" fill="#9d4edd"/><circle cx="64" cy="28" r="5" fill="#00add8"/>`)
+	</style>`, readmeTheme.Text, readmeTheme.Muted, readmeTheme.Dim, readmeTheme.Accent, readmeTheme.AccentStrong, readmeTheme.AccentSoft)
+	fmt.Fprintf(&s.Buffer, `<rect width="960" height="100%%" rx="18" fill="%s"/>`, readmeTheme.Background)
+	fmt.Fprintf(&s.Buffer, `<rect x="1" y="1" width="958" height="100%%" rx="17" fill="none" stroke="%s"/>`, readmeTheme.Border)
+	fmt.Fprintf(&s.Buffer, `<circle cx="28" cy="28" r="5" fill="%s"/><circle cx="46" cy="28" r="5" fill="%s"/><circle cx="64" cy="28" r="5" fill="%s"/>`, readmeTheme.AccentStrong, readmeTheme.Accent, readmeTheme.AccentSoft)
 	s.text(88, 34, "text label", section)
-	s.line(20, 52, 940, 52, "#2a2a40", 1)
+	s.line(20, 52, 940, 52, readmeTheme.Border, 1)
 	return s
 }
 
@@ -368,13 +487,68 @@ func (s *svgBuilder) line(x1, y1, x2, y2 int, color string, width int) {
 
 func (s *svgBuilder) pill(x, y int, value string, accent bool) int {
 	width := runeLen(value)*8 + 24
-	fill, stroke, class := "#1a1a2e", "#2a2a40", "text small"
+	fill, stroke, class := readmeTheme.SurfaceAlt, readmeTheme.Border, "text small"
 	if accent {
-		fill, stroke, class = "#24112f", "#b600ff", "text small"
+		fill, stroke, class = readmeTheme.Surface, readmeTheme.AccentStrong, "text small"
 	}
 	s.rect(x, y, width, 30, 8, fill, stroke)
 	s.text(x+12, y+20, class, value)
 	return width
+}
+
+func (s *svgBuilder) icon(name string, x, y, size int, color string) {
+	entry, ok := iconRegistry[strings.ToLower(name)]
+	if !ok {
+		return
+	}
+	viewBox, err := parseViewBox(entry.ViewBox)
+	if err != nil {
+		return
+	}
+	scale := min(float64(size)/viewBox.Width, float64(size)/viewBox.Height)
+	translateX := float64(x) + (float64(size)-viewBox.Width*scale)/2 - viewBox.MinX*scale
+	translateY := float64(y) + (float64(size)-viewBox.Height*scale)/2 - viewBox.MinY*scale
+	fmt.Fprintf(&s.Buffer, `<g transform="translate(%.4f %.4f) scale(%.6f)" fill="%s">`, translateX, translateY, scale, color)
+	for _, path := range entry.Paths {
+		fmt.Fprintf(&s.Buffer, `<path d="%s"/>`, path.D)
+	}
+	s.WriteString(`</g>`)
+}
+
+func (s *svgBuilder) iconPill(x, y int, name string) int {
+	width := iconPillWidth(name)
+	s.rect(x, y, width, 32, 8, readmeTheme.SurfaceAlt, readmeTheme.Border)
+	s.icon(name, x+8, y+7, 18, readmeTheme.AccentSoft)
+	s.text(x+34, y+21, "text small", name)
+	return width
+}
+
+func iconPillWidth(value string) int {
+	return runeLen(value)*7 + 46
+}
+
+func parseViewBox(value string) (iconViewBox, error) {
+	parts := strings.Fields(strings.ReplaceAll(value, ",", " "))
+	if len(parts) != 4 {
+		return iconViewBox{}, fmt.Errorf("invalid viewBox %q", value)
+	}
+	values := make([]float64, 4)
+	for index, part := range parts {
+		parsed, err := strconv.ParseFloat(part, 64)
+		if err != nil {
+			return iconViewBox{}, fmt.Errorf("invalid viewBox %q: %w", value, err)
+		}
+		values[index] = parsed
+	}
+	if values[2] <= 0 || values[3] <= 0 {
+		return iconViewBox{}, fmt.Errorf("invalid viewBox dimensions %q", value)
+	}
+	return iconViewBox{
+		MinX:   values[0],
+		MinY:   values[1],
+		Width:  values[2],
+		Height: values[3],
+	}, nil
 }
 
 func renderHeader(cfg config, profile githubProfile, fresh bool) []byte {
@@ -389,7 +563,7 @@ func renderHeader(cfg config, profile githubProfile, fresh bool) []byte {
 	if fresh {
 		s.text(730, 100, "text small muted", "github")
 		s.text(730, 128, "text label accent", fmt.Sprintf("%d repos", profile.PublicRepos))
-		s.text(730, 154, "text label cyan", fmt.Sprintf("%d seguidores", profile.Followers))
+		s.text(730, 154, "text label soft", fmt.Sprintf("%d seguidores", profile.Followers))
 	}
 	return s.finish()
 }
@@ -403,7 +577,7 @@ func renderAbout(cfg config) []byte {
 		}
 		s.text(38, 92+index*27, class, line)
 	}
-	s.line(600, 76, 600, 230, "#2a2a40", 1)
+	s.line(600, 76, 600, 230, readmeTheme.Border, 1)
 	s.text(630, 94, "text label accent", "gosto de construir")
 	for index, item := range cfg.Focus {
 		s.text(630, 128+index*31, "text body", "› "+item)
@@ -416,21 +590,22 @@ func renderAbout(cfg config) []byte {
 }
 
 func renderConfig(cfg config) []byte {
-	s := newSVG(315, "Configuração", "Ambiente de desenvolvimento e ferramentas", "~/.config")
+	s := newSVG(225, "Configuração", "Ambiente de desenvolvimento e ferramentas", "~/.config")
 	for index, item := range cfg.Environment {
-		column := index % 3
-		row := index / 3
-		x := 38 + column*306
-		y := 78 + row*68
-		s.rect(x, y, 274, 50, 9, "#131326", "#2a2a40")
-		s.text(x+14, y+21, "text small accent", item.Key)
-		s.text(x+14, y+41, "text body", item.Value)
+		column := index % 5
+		row := index / 5
+		x := 38 + column*177
+		y := 76 + row*68
+		s.rect(x, y, 165, 54, 9, readmeTheme.Surface, readmeTheme.Border)
+		s.icon(item.Value, x+12, y+16, 22, readmeTheme.Accent)
+		s.text(x+44, y+21, "text small accent", item.Key)
+		s.text(x+44, y+42, "text small", item.Value)
 	}
 	return s.finish()
 }
 
 func renderStack(cfg config) []byte {
-	s := newSVG(555, "Stack", "Tecnologias agrupadas por área", "~/stack")
+	s := newSVG(520, "Stack", "Tecnologias agrupadas por área", "~/stack")
 	positions := [][2]int{{38, 78}, {38, 222}, {38, 366}, {500, 78}, {500, 254}, {500, 430}}
 	for index, group := range cfg.Stack {
 		if index >= len(positions) {
@@ -446,12 +621,12 @@ func renderStack(cfg config) []byte {
 func renderPills(s *svgBuilder, startX, startY, maxWidth int, items []string) {
 	x, y := startX, startY
 	for _, item := range items {
-		width := runeLen(item)*8 + 24
+		width := iconPillWidth(item)
 		if x > startX && x+width > startX+maxWidth {
 			x = startX
-			y += 40
+			y += 42
 		}
-		x += s.pill(x, y, item, false) + 8
+		x += s.iconPill(x, y, item) + 8
 	}
 }
 
@@ -464,7 +639,7 @@ func renderBlog(cfg config, posts []blogPost, fresh bool) []byte {
 	}
 	for index, post := range posts {
 		y := 76 + index*86
-		s.rect(38, y, 884, 68, 10, "#131326", "#2a2a40")
+		s.rect(38, y, 884, 68, 10, readmeTheme.Surface, readmeTheme.Border)
 		s.text(54, y+25, "text label", truncate(post.Title, 88))
 		date := formatRSSDate(post.Published)
 		description := stripHTML(post.Description)
@@ -515,7 +690,7 @@ func renderGitHubStats(cfg config, data githubData, fresh bool) []byte {
 		s.text(500, y+22, "text small muted", fmt.Sprintf("%s · ★ %d · %s", detail, repo.Stars, relativeDate(repo.UpdatedAt)))
 	}
 
-	s.line(38, 372, 922, 372, "#2a2a40", 1)
+	s.line(38, 372, 922, 372, readmeTheme.Border, 1)
 	s.text(38, 405, "text label accent", "projetos em destaque")
 	x := 240
 	byName := make(map[string]repository, len(data.Repos))
@@ -533,7 +708,7 @@ func renderGitHubStats(cfg config, data githubData, fresh bool) []byte {
 }
 
 func metric(s *svgBuilder, x, y int, label, value string) {
-	s.rect(x, y, 190, 64, 10, "#131326", "#2a2a40")
+	s.rect(x, y, 190, 64, 10, readmeTheme.Surface, readmeTheme.Border)
 	s.text(x+15, y+24, "text small muted", label)
 	s.text(x+15, y+50, "text label accent", value)
 }
@@ -565,12 +740,12 @@ func renderLanguageBars(s *svgBuilder, languages map[string]int) {
 			percent = item.Count * 100 / total
 		}
 		s.text(38, y+13, "text small", truncate(item.Name, 14))
-		s.rect(150, y, 260, 14, 7, "#1a1a2e", "#2a2a40")
+		s.rect(150, y, 260, 14, 7, readmeTheme.SurfaceAlt, readmeTheme.Border)
 		width := percent * 260 / 100
 		if width < 8 {
 			width = 8
 		}
-		s.rect(150, y, width, 14, 7, "#b600ff", "#b600ff")
+		s.rect(150, y, width, 14, 7, readmeTheme.AccentStrong, readmeTheme.AccentStrong)
 		s.text(420, y+13, "text small muted", fmt.Sprintf("%d%%", percent))
 	}
 }
@@ -626,7 +801,7 @@ func renderActivity(cfg config, events []githubEvent, fresh bool) []byte {
 		}
 	}
 
-	s.line(490, 76, 490, 350, "#2a2a40", 1)
+	s.line(490, 76, 490, 350, readmeTheme.Border, 1)
 	s.text(520, 86, "text label accent", "atividade recente")
 	activities := meaningfulActivities(events, cfg.ActivityLimit)
 	for index, activity := range activities {
@@ -713,18 +888,18 @@ func translateAction(action string) string {
 
 func activityColor(count, max int) string {
 	if count == 0 {
-		return "#1a1a2e"
+		return readmeTheme.SurfaceAlt
 	}
 	ratio := count * 4 / max
 	switch ratio {
 	case 0, 1:
-		return "#4b1763"
+		return readmeTheme.ActivityLow
 	case 2:
-		return "#70208f"
+		return readmeTheme.ActivityMid
 	case 3:
-		return "#9327bb"
+		return readmeTheme.AccentStrong
 	default:
-		return "#b600ff"
+		return readmeTheme.Accent
 	}
 }
 

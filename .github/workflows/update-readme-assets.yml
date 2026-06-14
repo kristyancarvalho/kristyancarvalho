@@ -28,7 +28,7 @@ jobs:
 
       - name: Generate README assets
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
         run: go run ./scripts/generate-readme-assets.go
 
       - name: Commit generated changes

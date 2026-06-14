@@ -1,11 +1,21 @@
 package main
 
 import (
+	"os"
 	"strings"
 	"testing"
 	"time"
 	"unicode/utf8"
 )
+
+func TestMain(m *testing.M) {
+	var err error
+	iconRegistry, err = loadIconRegistry("../assets/readme/icons.json")
+	if err != nil {
+		panic(err)
+	}
+	os.Exit(m.Run())
+}
 
 func TestTruncatePreservesUTF8(t *testing.T) {
 	got := truncate("aplicações rápidas e explícitas", 18)
@@ -49,5 +59,51 @@ func TestRenderedSVGIsSelfContained(t *testing.T) {
 	}
 	if !strings.HasPrefix(rendered, "<svg") || !strings.HasSuffix(rendered, "</svg>") {
 		t.Fatal("rendered output is not a complete SVG document")
+	}
+}
+
+func TestConfigAndStackRenderIcons(t *testing.T) {
+	cfg := config{
+		Environment: []configItem{{Key: "os", Value: "Arch Linux"}},
+		Stack:       []stackGroup{{Label: "Linguagens", Items: []string{"TypeScript"}}},
+	}
+
+	for name, rendered := range map[string]string{
+		"config": string(renderConfig(cfg)),
+		"stack":  string(renderStack(cfg)),
+	} {
+		if !strings.Contains(rendered, "<path") {
+			t.Fatalf("%s card does not contain an inline icon", name)
+		}
+		if strings.Contains(rendered, "<image") {
+			t.Fatalf("%s card contains an external image element", name)
+		}
+	}
+}
+
+func TestConfiguredIconsHaveVendoredSources(t *testing.T) {
+	cfg, err := loadConfig("../readme.config.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := validateConfiguredIcons(cfg, iconRegistry); err != nil {
+		t.Fatal(err)
+	}
+	for key, icon := range iconRegistry {
+		if icon.Source == "" || icon.License == "" {
+			t.Fatalf("icon %q has no source or license", key)
+		}
+		if len(icon.Paths) == 0 {
+			t.Fatalf("icon %q has no path data", key)
+		}
+	}
+}
+
+func TestThemeDoesNotContainLegacyPurple(t *testing.T) {
+	rendered := string(renderHeader(config{}, githubProfile{}, false))
+	for _, color := range []string{"#b600ff", "#9d4edd", "#4b1763", "#70208f", "#9327bb"} {
+		if strings.Contains(strings.ToLower(rendered), color) {
+			t.Fatalf("rendered SVG contains legacy color %s", color)
+		}
 	}
 }
