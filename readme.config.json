@@ -1,0 +1,97 @@
+{
+  "githubUsername": "kristyancarvalho",
+  "blogURL": "https://blog.kristyan.dev",
+  "rssURL": "https://blog.kristyan.dev/rss.xml",
+  "bio": [
+    "Full-Stack Developer em São Paulo.",
+    "Construo aplicações web, mobile e desktop, serviços de backend,",
+    "automações e ferramentas para desenvolvedores."
+  ],
+  "focus": [
+    "produtos de ponta a ponta",
+    "software rápido e explícito",
+    "ferramentas que removem atrito"
+  ],
+  "links": [
+    {
+      "label": "kristyan.dev",
+      "url": "https://kristyan.dev"
+    },
+    {
+      "label": "github.com/kristyancarvalho",
+      "url": "https://github.com/kristyancarvalho"
+    },
+    {
+      "label": "blog.kristyan.dev",
+      "url": "https://blog.kristyan.dev"
+    }
+  ],
+  "environment": [
+    {
+      "key": "os",
+      "value": "Arch Linux"
+    },
+    {
+      "key": "wm",
+      "value": "Hyprland"
+    },
+    {
+      "key": "terminal",
+      "value": "Kitty"
+    },
+    {
+      "key": "shell",
+      "value": "Zsh"
+    },
+    {
+      "key": "multiplexer",
+      "value": "tmux"
+    },
+    {
+      "key": "editor",
+      "value": "Neovim"
+    },
+    {
+      "key": "runtimes",
+      "value": "Go · Node.js"
+    },
+    {
+      "key": "containers",
+      "value": "Docker"
+    },
+    {
+      "key": "versionamento",
+      "value": "Git"
+    }
+  ],
+  "stack": [
+    {
+      "label": "Linguagens",
+      "items": ["TypeScript", "JavaScript", "Go", "Lua", "Shell", "HTML", "CSS"]
+    },
+    {
+      "label": "Backend",
+      "items": ["Node.js", "Express", "Fastify", "Gin", "WebSocket"]
+    },
+    {
+      "label": "Testes",
+      "items": ["Jest", "RSpec", "Playwright"]
+    },
+    {
+      "label": "Frontend & Mobile",
+      "items": ["React", "Next.js", "React Native", "Expo", "Vite", "TailwindCSS", "Electron"]
+    },
+    {
+      "label": "Banco de Dados & ORM",
+      "items": ["PostgreSQL", "MongoDB", "Redis", "SQLite", "Prisma", "Firebase"]
+    },
+    {
+      "label": "Infra & Ferramentas",
+      "items": ["Docker", "Nginx", "Git", "Figma"]
+    }
+  ],
+  "highlightProjects": ["rendermd", "disGOrd-lyrics", "gitpulse"],
+  "blogPostLimit": 3,
+  "recentRepositoryLimit": 3,
+  "activityLimit": 5
+}
