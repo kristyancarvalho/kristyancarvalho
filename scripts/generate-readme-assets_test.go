@@ -1,11 +1,21 @@
 package main
 
 import (
+	"os"
 	"strings"
 	"testing"
 	"time"
 	"unicode/utf8"
 )
+
+func TestMain(m *testing.M) {
+	var err error
+	iconRegistry, err = loadIconRegistry("../assets/readme/icons.json")
+	if err != nil {
+		panic(err)
+	}
+	os.Exit(m.Run())
+}
 
 func TestTruncatePreservesUTF8(t *testing.T) {
 	got := truncate("aplicações rápidas e explícitas", 18)
@@ -62,11 +72,29 @@ func TestConfigAndStackRenderIcons(t *testing.T) {
 		"config": string(renderConfig(cfg)),
 		"stack":  string(renderStack(cfg)),
 	} {
-		if !strings.Contains(rendered, "<path") && !strings.Contains(rendered, "icon-label") {
+		if !strings.Contains(rendered, "<path") {
 			t.Fatalf("%s card does not contain an inline icon", name)
 		}
 		if strings.Contains(rendered, "<image") {
 			t.Fatalf("%s card contains an external image element", name)
+		}
+	}
+}
+
+func TestConfiguredIconsHaveVendoredSources(t *testing.T) {
+	cfg, err := loadConfig("../readme.config.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := validateConfiguredIcons(cfg, iconRegistry); err != nil {
+		t.Fatal(err)
+	}
+	for key, icon := range iconRegistry {
+		if icon.Source == "" || icon.License == "" {
+			t.Fatalf("icon %q has no source or license", key)
+		}
+		if len(icon.Paths) == 0 {
+			t.Fatalf("icon %q has no path data", key)
 		}
 	}
 }

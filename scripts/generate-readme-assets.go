@@ -21,12 +21,13 @@ import (
 )
 
 const (
-	configPath   = "readme.config.json"
-	readmePath   = "README.md"
-	assetDir     = "assets/readme"
-	startMarker  = "<!-- README-ASSETS:START -->"
-	endMarker    = "<!-- README-ASSETS:END -->"
-	githubAPIURL = "https://api.github.com"
+	configPath       = "readme.config.json"
+	readmePath       = "README.md"
+	assetDir         = "assets/readme"
+	iconRegistryPath = "assets/readme/icons.json"
+	startMarker      = "<!-- README-ASSETS:START -->"
+	endMarker        = "<!-- README-ASSETS:END -->"
+	githubAPIURL     = "https://api.github.com"
 )
 
 type config struct {
@@ -152,9 +153,26 @@ type svgTheme struct {
 }
 
 type icon struct {
-	Path     string
-	Stroke   bool
-	Monogram string
+	Name    string     `json:"name"`
+	ViewBox string     `json:"viewBox"`
+	Paths   []iconPath `json:"paths"`
+	Source  string     `json:"source"`
+	License string     `json:"license"`
+}
+
+type iconPath struct {
+	D string `json:"d"`
+}
+
+type iconRegistryFile struct {
+	Icons map[string]icon `json:"icons"`
+}
+
+type iconViewBox struct {
+	MinX   float64
+	MinY   float64
+	Width  float64
+	Height float64
 }
 
 var readmeTheme = svgTheme{
@@ -175,46 +193,7 @@ var readmeTheme = svgTheme{
 	Danger:       "#f87171",
 }
 
-var iconRegistry = map[string]icon{
-	"arch linux":   {Path: "M12 2 2.5 21h4.2L12 11.8 17.3 21h4.2L12 2zm0 5.2 2.1 4.1-2.1-1.5-2.1 1.5L12 7.2z"},
-	"hyprland":     {Path: "M5 4h14v16H5V4zm2 3v10h10V7H7zm2 2h6v2H9V9zm0 4h4v2H9v-2z"},
-	"kitty":        {Path: "M4 5h16v14H4V5zm2 2v10h12V7H6zm1 3 3 3-3 3 1.4 1.4 4.4-4.4-4.4-4.4L7 10zm6 5h4v-2h-4v2z"},
-	"zsh":          {Path: "M4 6h16v12H4V6zm2 2v8h12V8H6zm1.2 2 2 2-2 2 1.2 1.2 3.2-3.2-3.2-3.2L7.2 10zM12 15h4v-1.8h-4V15z"},
-	"tmux":         {Path: "M4 4h16v16H4V4zm2 2v5h5V6H6zm7 0v5h5V6h-5zm-7 7v5h5v-5H6zm7 0v5h5v-5h-5z"},
-	"neovim":       {Path: "M4 5.5 8 3v13.5l-4 3V5.5zm5-.8L13 2l7 5v11l-4 4-7-12.2V4.7zm4 3.1 3 6V8.2l-3-2.1v1.7z"},
-	"go":           {Monogram: "Go"},
-	"node.js":      {Path: "M12 2 21 7v10l-9 5-9-5V7l9-5zm0 2.4L5.2 8.2v7.6l6.8 3.8 6.8-3.8V8.2L12 4.4z"},
-	"docker":       {Path: "M4 8h3v3H4V8zm4 0h3v3H8V8zm4 0h3v3h-3V8zm-4-4h3v3H8V4zm4 0h3v3h-3V4zm4 4h3v3h-3V8zM3 12h17c-.4 4.6-3.4 7-8.7 7C6.7 19 4 16.7 3 12z"},
-	"git":          {Path: "M7 3a2 2 0 0 1 1.7 3l3.6 3.6a2 2 0 0 1 2.7 2.7l2 2a2 2 0 1 1-1.4 1.4l-2-2a2 2 0 0 1-2.7-2.7L7.3 7.4A2 2 0 1 1 7 3zm0 1.4a.6.6 0 1 0 0 1.2.6.6 0 0 0 0-1.2zm6.7 6.3a.6.6 0 1 0 0 1.2.6.6 0 0 0 0-1.2zm3.4 4.1a.6.6 0 1 0 0 1.2.6.6 0 0 0 0-1.2z"},
-	"typescript":   {Monogram: "TS"},
-	"javascript":   {Monogram: "JS"},
-	"lua":          {Monogram: "Lu"},
-	"shell":        {Path: "M4 5h16v14H4V5zm2 2v10h12V7H6zm1 3 3 3-3 3 1.4 1.4 4.4-4.4-4.4-4.4L7 10zm6 5h4v-2h-4v2z"},
-	"html5":        {Monogram: "H5"},
-	"css3":         {Monogram: "C3"},
-	"express":      {Monogram: "Ex"},
-	"fastify":      {Monogram: "Fa"},
-	"gin":          {Monogram: "Gi"},
-	"websocket":    {Path: "M6 7a7 7 0 0 1 11.8 3.2l-1.7 1A5 5 0 0 0 7.4 9L10 9v2H4V5h2v2zm12 10a7 7 0 0 1-11.8-3.2l1.7-1A5 5 0 0 0 16.6 15H14v-2h6v6h-2v-2z"},
-	"jest":         {Monogram: "Je"},
-	"rspec":        {Path: "M12 2 21 9l-9 13L3 9l9-7zm0 3.1L6.2 9.5 12 17.9l5.8-8.4L12 5.1z"},
-	"playwright":   {Path: "M4 5h16v14H4V5zm2 2v10h12V7H6zm2.2 5.1 2.1 2.1 4.2-4.2 1.3 1.3-5.5 5.5-3.4-3.4 1.3-1.3z"},
-	"react":        {Path: "M12 10.3a1.7 1.7 0 1 1 0 3.4 1.7 1.7 0 0 1 0-3.4zm0-4.8c4.8 0 8.7 2.9 8.7 6.5s-3.9 6.5-8.7 6.5S3.3 15.6 3.3 12 7.2 5.5 12 5.5zm0 2c-3.8 0-6.7 2.2-6.7 4.5s2.9 4.5 6.7 4.5 6.7-2.2 6.7-4.5S15.8 7.5 12 7.5zm5.6-1.7c2.4 1.4 1.8 5.9-.6 10s-5.9 7.1-8.3 5.7-1.8-5.9.6-10 5.9-7.1 8.3-5.7zm-1 1.7c-1.3-.8-3.8 1.2-5.6 4.9s-2 6.7-1.3 7.5c1.3.8 3.8-1.2 5.6-4.9s2-6.7 1.3-7.5z"},
-	"next.js":      {Monogram: "Nx"},
-	"react native": {Monogram: "RN"},
-	"expo":         {Monogram: "Xp"},
-	"vite":         {Path: "M5 3h14l-7 18L5 3zm3 3 4 10 4-10H8z"},
-	"tailwindcss":  {Path: "M12 6c-3 0-4.9 1.5-5.7 4.5 1.1-1.5 2.5-2.1 4-1.7 2 .5 2.8 2.7 5.7 2.7 3 0 4.9-1.5 5.7-4.5-1.1 1.5-2.5 2.1-4 1.7C15.7 8.2 14.9 6 12 6zm-5.7 6c-3 0-4.9 1.5-5.7 4.5 1.1-1.5 2.5-2.1 4-1.7 2 .5 2.8 2.7 5.7 2.7 3 0 4.9-1.5 5.7-4.5-1.1 1.5-2.5 2.1-4 1.7-2-.5-2.8-2.7-5.7-2.7z"},
-	"electron":     {Monogram: "El"},
-	"postgresql":   {Monogram: "Pg"},
-	"mongodb":      {Path: "M12 2c4 4.2 5 8.1 3.4 11.7-1 2.2-2.2 3.6-3.4 4.6-1.2-1-2.4-2.4-3.4-4.6C7 10.1 8 6.2 12 2zm0 4.2c-1.8 2.7-2.2 5-1.1 7.1.3.6.7 1.2 1.1 1.7.4-.5.8-1.1 1.1-1.7 1.1-2.1.7-4.4-1.1-7.1zM11 18h2v4h-2v-4z"},
-	"redis":        {Path: "M12 3 21 7l-9 4-9-4 9-4zm-7.8 7L12 13.5 19.8 10 21 12l-9 4-9-4 1.2-2zm0 5L12 18.5l7.8-3.5 1.2 2-9 4-9-4 1.2-2z"},
-	"sqlite":       {Monogram: "Sq"},
-	"prisma":       {Path: "M13 2 21 19l-13 3L3 17 13 2zm-.5 5.2-5.8 9.2 2.1 2.1 8.8-2-5.1-9.3z"},
-	"firebase":     {Path: "M5 20 8 4l4 7 3-9 4 18-7 3-7-3zm4.1-5.9-.7 3.8 3.6 1.5 3.8-1.6-1.5-7.7-2 5.9-3.2-1.9z"},
-	"nginx":        {Monogram: "Nx"},
-	"figma":        {Path: "M8 2h4v8H8a4 4 0 0 1 0-8zm0 2a2 2 0 1 0 0 4h2V4H8zm4-2h4a4 4 0 0 1 0 8h-4V2zm2 2v4h2a2 2 0 1 0 0-4h-2zM8 10h4v8H8a4 4 0 0 1 0-8zm0 2a2 2 0 1 0 0 4h2v-4H8zm4-2h4a4 4 0 1 1-4 4v-4zm2 2v2a2 2 0 1 0 2-2h-2zM8 18h4v2a4 4 0 1 1-4-4h4v2H8a2 2 0 1 0 2 2H8v-2z"},
-}
+var iconRegistry map[string]icon
 
 func main() {
 	if err := run(); err != nil {
@@ -225,6 +204,13 @@ func main() {
 func run() error {
 	cfg, err := loadConfig(configPath)
 	if err != nil {
+		return err
+	}
+	iconRegistry, err = loadIconRegistry(iconRegistryPath)
+	if err != nil {
+		return err
+	}
+	if err := validateConfiguredIcons(cfg, iconRegistry); err != nil {
 		return err
 	}
 	if err := os.MkdirAll(assetDir, 0o755); err != nil {
@@ -327,6 +313,56 @@ func loadConfig(path string) (config, error) {
 	return cfg, nil
 }
 
+func loadIconRegistry(path string) (map[string]icon, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf("read icon registry: %w", err)
+	}
+	var registry iconRegistryFile
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(&registry); err != nil {
+		return nil, fmt.Errorf("parse icon registry: %w", err)
+	}
+	if len(registry.Icons) == 0 {
+		return nil, errors.New("icon registry is empty")
+	}
+	for key, icon := range registry.Icons {
+		if strings.TrimSpace(icon.ViewBox) == "" || len(icon.Paths) == 0 {
+			return nil, fmt.Errorf("icon %q has no viewBox or path data", key)
+		}
+		if _, err := parseViewBox(icon.ViewBox); err != nil {
+			return nil, fmt.Errorf("icon %q: %w", key, err)
+		}
+	}
+	return registry.Icons, nil
+}
+
+func validateConfiguredIcons(cfg config, registry map[string]icon) error {
+	var missing []string
+	seen := map[string]bool{}
+	check := func(name string) {
+		key := strings.ToLower(strings.TrimSpace(name))
+		if _, ok := registry[key]; !ok && !seen[key] {
+			seen[key] = true
+			missing = append(missing, name)
+		}
+	}
+	for _, item := range cfg.Environment {
+		check(item.Value)
+	}
+	for _, group := range cfg.Stack {
+		for _, item := range group.Items {
+			check(item)
+		}
+	}
+	if len(missing) > 0 {
+		sort.Strings(missing)
+		return fmt.Errorf("icon registry is missing: %s", strings.Join(missing, ", "))
+	}
+	return nil
+}
+
 func (client *githubClient) get(ctx context.Context, path string, target any) error {
 	request, err := http.NewRequestWithContext(ctx, http.MethodGet, githubAPIURL+path, nil)
 	if err != nil {
@@ -423,7 +459,6 @@ func newSVG(height int, title, description, section string) *svgBuilder {
 		.text{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;fill:%s}
 		.muted{fill:%s}.dim{fill:%s}.accent{fill:%s}.strong{fill:%s}.soft{fill:%s}
 		.label{font-size:15px;font-weight:700}.body{font-size:15px}.small{font-size:13px}
-		.icon-label{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:8px;font-weight:700;text-anchor:middle}
 	</style>`, readmeTheme.Text, readmeTheme.Muted, readmeTheme.Dim, readmeTheme.Accent, readmeTheme.AccentStrong, readmeTheme.AccentSoft)
 	fmt.Fprintf(&s.Buffer, `<rect width="960" height="100%%" rx="18" fill="%s"/>`, readmeTheme.Background)
 	fmt.Fprintf(&s.Buffer, `<rect x="1" y="1" width="958" height="100%%" rx="17" fill="none" stroke="%s"/>`, readmeTheme.Border)
@@ -464,47 +499,56 @@ func (s *svgBuilder) pill(x, y int, value string, accent bool) int {
 func (s *svgBuilder) icon(name string, x, y, size int, color string) {
 	entry, ok := iconRegistry[strings.ToLower(name)]
 	if !ok {
-		entry = icon{Monogram: iconMonogram(name)}
-	}
-	if entry.Monogram != "" {
-		fmt.Fprintf(&s.Buffer, `<text x="%d" y="%d" class="icon-label" fill="%s">%s</text>`, x+size/2, y+size/2+3, color, esc(entry.Monogram))
 		return
 	}
-	scale := float64(size) / 24
-	if entry.Stroke {
-		fmt.Fprintf(&s.Buffer, `<path d="%s" transform="translate(%d %d) scale(%.4f)" fill="none" stroke="%s" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>`, entry.Path, x, y, scale, color)
+	viewBox, err := parseViewBox(entry.ViewBox)
+	if err != nil {
 		return
 	}
-	fmt.Fprintf(&s.Buffer, `<path d="%s" transform="translate(%d %d) scale(%.4f)" fill="%s" fill-rule="evenodd"/>`, entry.Path, x, y, scale, color)
+	scale := min(float64(size)/viewBox.Width, float64(size)/viewBox.Height)
+	translateX := float64(x) + (float64(size)-viewBox.Width*scale)/2 - viewBox.MinX*scale
+	translateY := float64(y) + (float64(size)-viewBox.Height*scale)/2 - viewBox.MinY*scale
+	fmt.Fprintf(&s.Buffer, `<g transform="translate(%.4f %.4f) scale(%.6f)" fill="%s">`, translateX, translateY, scale, color)
+	for _, path := range entry.Paths {
+		fmt.Fprintf(&s.Buffer, `<path d="%s"/>`, path.D)
+	}
+	s.WriteString(`</g>`)
 }
 
 func (s *svgBuilder) iconPill(x, y int, name string) int {
 	width := iconPillWidth(name)
 	s.rect(x, y, width, 32, 8, readmeTheme.SurfaceAlt, readmeTheme.Border)
-	s.icon(name, x+9, y+8, 16, readmeTheme.AccentSoft)
-	s.text(x+32, y+21, "text small", name)
+	s.icon(name, x+8, y+7, 18, readmeTheme.AccentSoft)
+	s.text(x+34, y+21, "text small", name)
 	return width
 }
 
 func iconPillWidth(value string) int {
-	return runeLen(value)*7 + 44
+	return runeLen(value)*7 + 46
 }
 
-func iconMonogram(value string) string {
-	words := strings.FieldsFunc(value, func(r rune) bool {
-		return r == ' ' || r == '.' || r == '-' || r == '&'
-	})
-	if len(words) > 1 {
-		return strings.ToUpper(string([]rune(words[0])[0]) + string([]rune(words[1])[0]))
+func parseViewBox(value string) (iconViewBox, error) {
+	parts := strings.Fields(strings.ReplaceAll(value, ",", " "))
+	if len(parts) != 4 {
+		return iconViewBox{}, fmt.Errorf("invalid viewBox %q", value)
 	}
-	runes := []rune(value)
-	if len(runes) == 0 {
-		return "?"
+	values := make([]float64, 4)
+	for index, part := range parts {
+		parsed, err := strconv.ParseFloat(part, 64)
+		if err != nil {
+			return iconViewBox{}, fmt.Errorf("invalid viewBox %q: %w", value, err)
+		}
+		values[index] = parsed
 	}
-	if len(runes) > 2 {
-		runes = runes[:2]
+	if values[2] <= 0 || values[3] <= 0 {
+		return iconViewBox{}, fmt.Errorf("invalid viewBox dimensions %q", value)
 	}
-	return strings.ToUpper(string(runes))
+	return iconViewBox{
+		MinX:   values[0],
+		MinY:   values[1],
+		Width:  values[2],
+		Height: values[3],
+	}, nil
 }
 
 func renderHeader(cfg config, profile githubProfile, fresh bool) []byte {
