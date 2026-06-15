@@ -9,11 +9,11 @@
 
 <img src="./assets/readme/stack.svg?v=24f5c569ab11" width="100%" alt="Stack de tecnologias" />
 
-<a href="https://blog.kristyan.dev"><img src="./assets/readme/blog.svg?v=b9c471f42563" width="100%" alt="Últimos posts do blog" /></a>
+<a href="https://blog.kristyan.dev"><img src="./assets/readme/blog.svg?v=efdaa6ee2d1f" width="100%" alt="Últimos posts do blog" /></a>
 
-<a href="https://github.com/kristyancarvalho?tab=repositories"><img src="./assets/readme/github-stats.svg?v=64b5dbf58f7e" width="100%" alt="Estatísticas dos repositórios públicos no GitHub" /></a>
+<a href="https://github.com/kristyancarvalho?tab=repositories"><img src="./assets/readme/github-stats.svg?v=1bbde31708cb" width="100%" alt="Estatísticas dos repositórios públicos no GitHub" /></a>
 
-<a href="https://github.com/kristyancarvalho?tab=overview"><img src="./assets/readme/activity.svg?v=f226bb4522e9" width="100%" alt="Atividade pública recente no GitHub" /></a>
+<a href="https://github.com/kristyancarvalho?tab=overview"><img src="./assets/readme/activity.svg?v=1eb65fb214e1" width="100%" alt="Atividade pública recente no GitHub" /></a>
 
 </div>
 <!-- README-ASSETS:END -->
