@@ -13,7 +13,7 @@
 
 <a href="https://github.com/kristyancarvalho?tab=repositories"><img src="./assets/readme/github-stats.svg?v=4b7760e0cc70" width="100%" alt="Estatísticas dos repositórios públicos no GitHub" /></a>
 
-<a href="https://github.com/kristyancarvalho?tab=overview"><img src="./assets/readme/activity.svg?v=eb806d731982" width="100%" alt="Atividade pública recente no GitHub" /></a>
+<a href="https://github.com/kristyancarvalho?tab=overview"><img src="./assets/readme/activity.svg?v=12a616564db2" width="100%" alt="Atividade pública recente no GitHub" /></a>
 
 </div>
 <!-- README-ASSETS:END -->
