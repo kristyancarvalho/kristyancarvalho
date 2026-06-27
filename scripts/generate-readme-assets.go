@@ -28,6 +28,7 @@ const (
 	startMarker      = "<!-- README-ASSETS:START -->"
 	endMarker        = "<!-- README-ASSETS:END -->"
 	githubAPIURL     = "https://api.github.com"
+	githubGraphQLURL = "https://api.github.com/graphql"
 )
 
 type config struct {
@@ -116,6 +117,40 @@ type githubData struct {
 	Repos   []repository
 }
 
+type contributionStats struct {
+	Ready                          bool
+	PrivateMode                    string
+	LineMode                       string
+	Note                           string
+	StartedYear                    int
+	EndedYear                      int
+	TotalContributions             int
+	TotalCommitContributions       int
+	TotalIssueContributions        int
+	TotalPullRequestContribs       int
+	TotalPullRequestReviewContribs int
+	TotalRepositoryContribs        int
+	RestrictedContributions        int
+	HasRestrictedContributions     bool
+	RepositoriesWithCommits        int
+	Years                          []yearContributionStats
+	Lines                          contributionLineStats
+}
+
+type yearContributionStats struct {
+	Year          int
+	Commits       int
+	Contributions int
+}
+
+type contributionLineStats struct {
+	Available    bool
+	Partial      bool
+	Additions    int
+	Deletions    int
+	PullRequests int
+}
+
 type svgDocument struct {
 	Name    string
 	Content []byte
@@ -124,6 +159,11 @@ type svgDocument struct {
 }
 
 type githubClient struct {
+	http  *http.Client
+	token string
+}
+
+type graphQLClient struct {
 	http  *http.Client
 	token string
 }
@@ -255,6 +295,15 @@ func run() error {
 		log.Printf("Blog posts loaded: %d", len(posts))
 	}
 
+	contributions, contributionsErr := fetchContributionStats(ctx, client.http, cfg)
+	if contributionsErr != nil {
+		log.Printf("GitHub contribution stats unavailable: %v", contributionsErr)
+	} else if !contributions.Ready {
+		log.Printf("GitHub contribution stats rendered in fallback mode")
+	} else {
+		log.Printf("GitHub contribution stats loaded: %d year(s), %d contribution(s)", len(contributions.Years), contributions.TotalContributions)
+	}
+
 	githubReady := profileErr == nil && reposErr == nil
 	documents := []svgDocument{
 		{Name: "header.svg", Content: renderHeader(cfg, gh.Profile, profileErr == nil), Dynamic: true, Ready: profileErr == nil},
@@ -264,6 +313,7 @@ func run() error {
 		{Name: "blog.svg", Content: renderBlog(cfg, posts, blogErr == nil), Dynamic: true, Ready: blogErr == nil},
 		{Name: "github-stats.svg", Content: renderGitHubStats(cfg, gh, githubReady), Dynamic: true, Ready: githubReady},
 		{Name: "activity.svg", Content: renderActivity(cfg, events, eventsErr == nil), Dynamic: true, Ready: eventsErr == nil},
+		{Name: "contributions.svg", Content: renderContributionStats(contributions), Dynamic: true, Ready: contributionsErr == nil},
 	}
 
 	for _, document := range documents {
@@ -412,6 +462,362 @@ func (client *githubClient) events(ctx context.Context, username string) ([]gith
 		return nil, err
 	}
 	return events, nil
+}
+
+func fetchContributionStats(ctx context.Context, httpClient *http.Client, cfg config) (contributionStats, error) {
+	profileToken := strings.TrimSpace(os.Getenv("PROFILE_STATS_TOKEN"))
+	token := profileToken
+	privateHint := token != ""
+	if token == "" {
+		token = strings.TrimSpace(os.Getenv("GH_TOKEN"))
+	}
+	if token == "" {
+		return fallbackContributionStats("token ausente", "indisponivel"), nil
+	}
+
+	client := &graphQLClient{
+		http:  httpClient,
+		token: token,
+	}
+	years, viewerLogin, err := client.contributionYears(ctx, cfg.GitHubUsername)
+	if err != nil {
+		return fallbackContributionStats("api indisponivel", "indisponivel"), err
+	}
+	if len(years) == 0 {
+		years = []int{time.Now().UTC().Year()}
+	}
+	sort.Ints(years)
+
+	stats := contributionStats{
+		Ready:       true,
+		PrivateMode: contributionPrivateMode(privateHint, viewerLogin, cfg.GitHubUsername),
+		LineMode:    "indisponivel",
+		StartedYear: years[0],
+		EndedYear:   years[len(years)-1],
+	}
+
+	now := time.Now().UTC()
+	for _, year := range years {
+		if year > now.Year() {
+			continue
+		}
+		yearStats, err := client.contributionYear(ctx, cfg.GitHubUsername, year, now)
+		if err != nil {
+			if stats.TotalContributions == 0 && stats.TotalCommitContributions == 0 {
+				return fallbackContributionStats("api indisponivel", "indisponivel"), err
+			}
+			stats.Note = "parcial"
+			break
+		}
+		stats.TotalContributions += yearStats.TotalContributions
+		stats.TotalCommitContributions += yearStats.TotalCommitContributions
+		stats.TotalIssueContributions += yearStats.TotalIssueContributions
+		stats.TotalPullRequestContribs += yearStats.TotalPullRequestContribs
+		stats.TotalPullRequestReviewContribs += yearStats.TotalPullRequestReviewContribs
+		stats.TotalRepositoryContribs += yearStats.TotalRepositoryContribs
+		stats.RestrictedContributions += yearStats.RestrictedContributions
+		stats.RepositoriesWithCommits += yearStats.RepositoriesWithCommits
+		stats.HasRestrictedContributions = stats.HasRestrictedContributions || yearStats.HasRestrictedContributions
+		stats.Years = append(stats.Years, yearContributionStats{
+			Year:          year,
+			Commits:       yearStats.TotalCommitContributions,
+			Contributions: yearStats.TotalContributions,
+		})
+	}
+
+	if privateHint && strings.EqualFold(viewerLogin, cfg.GitHubUsername) {
+		lines, err := client.pullRequestLineStats(ctx, cfg.GitHubUsername, years)
+		if err == nil {
+			stats.Lines = lines
+			if lines.Available {
+				stats.LineMode = "prs acessiveis"
+				if lines.Partial {
+					stats.LineMode = "parcial"
+				}
+			}
+		} else {
+			stats.LineMode = "indisponivel"
+		}
+	}
+
+	if len(stats.Years) == 0 {
+		stats.Note = "sem atividade"
+	}
+	return stats, nil
+}
+
+func fallbackContributionStats(privateMode, lineMode string) contributionStats {
+	return contributionStats{
+		PrivateMode: privateMode,
+		LineMode:    lineMode,
+		Note:        "Configure PROFILE_STATS_TOKEN para dados privados agregados.",
+	}
+}
+
+func contributionPrivateMode(privateHint bool, viewerLogin, username string) string {
+	if !privateHint {
+		return "somente publico"
+	}
+	if strings.EqualFold(viewerLogin, username) {
+		return "agregado"
+	}
+	return "limitado"
+}
+
+type contributionYearsResponse struct {
+	Viewer struct {
+		Login string `json:"login"`
+	} `json:"viewer"`
+	User *struct {
+		ContributionsCollection struct {
+			ContributionYears []int `json:"contributionYears"`
+		} `json:"contributionsCollection"`
+	} `json:"user"`
+}
+
+type contributionYearResponse struct {
+	User *struct {
+		ContributionsCollection struct {
+			ContributionCalendar struct {
+				TotalContributions int `json:"totalContributions"`
+			} `json:"contributionCalendar"`
+			TotalCommitContributions                int  `json:"totalCommitContributions"`
+			TotalIssueContributions                 int  `json:"totalIssueContributions"`
+			TotalPullRequestContribs                int  `json:"totalPullRequestContributions"`
+			TotalPullRequestReviewContribs          int  `json:"totalPullRequestReviewContributions"`
+			TotalRepositoryContribs                 int  `json:"totalRepositoryContributions"`
+			TotalRepositoriesWithContributedCommits int  `json:"totalRepositoriesWithContributedCommits"`
+			RestrictedContributions                 int  `json:"restrictedContributionsCount"`
+			HasRestrictedContributions              bool `json:"hasAnyRestrictedContributions"`
+		} `json:"contributionsCollection"`
+	} `json:"user"`
+}
+
+type pullRequestLineSearchResponse struct {
+	Search struct {
+		IssueCount int `json:"issueCount"`
+		PageInfo   struct {
+			HasNextPage bool   `json:"hasNextPage"`
+			EndCursor   string `json:"endCursor"`
+		} `json:"pageInfo"`
+		Nodes []struct {
+			Additions int `json:"additions"`
+			Deletions int `json:"deletions"`
+		} `json:"nodes"`
+	} `json:"search"`
+}
+
+func (client *graphQLClient) contributionYears(ctx context.Context, username string) ([]int, string, error) {
+	const query = `
+query($login: String!) {
+  viewer {
+    login
+  }
+  user(login: $login) {
+    contributionsCollection {
+      contributionYears
+    }
+  }
+}`
+	var response contributionYearsResponse
+	if err := client.query(ctx, query, map[string]any{"login": username}, &response); err != nil {
+		return nil, "", err
+	}
+	if response.User == nil {
+		return nil, response.Viewer.Login, errors.New("GitHub user not found")
+	}
+	return response.User.ContributionsCollection.ContributionYears, response.Viewer.Login, nil
+}
+
+func (client *graphQLClient) contributionYear(ctx context.Context, username string, year int, now time.Time) (contributionStats, error) {
+	const query = `
+query($login: String!, $from: DateTime!, $to: DateTime!) {
+  user(login: $login) {
+    contributionsCollection(from: $from, to: $to) {
+      contributionCalendar {
+        totalContributions
+      }
+      totalCommitContributions
+      totalIssueContributions
+      totalPullRequestContributions
+      totalPullRequestReviewContributions
+      totalRepositoryContributions
+      totalRepositoriesWithContributedCommits
+      restrictedContributionsCount
+      hasAnyRestrictedContributions
+    }
+  }
+}`
+	from, to := contributionYearRange(year, now)
+	var response contributionYearResponse
+	err := client.query(ctx, query, map[string]any{
+		"login": username,
+		"from":  from.Format(time.RFC3339),
+		"to":    to.Format(time.RFC3339),
+	}, &response)
+	if err != nil {
+		return contributionStats{}, err
+	}
+	if response.User == nil {
+		return contributionStats{}, errors.New("GitHub user not found")
+	}
+	collection := response.User.ContributionsCollection
+	return contributionStats{
+		TotalContributions:             collection.ContributionCalendar.TotalContributions,
+		TotalCommitContributions:       collection.TotalCommitContributions,
+		TotalIssueContributions:        collection.TotalIssueContributions,
+		TotalPullRequestContribs:       collection.TotalPullRequestContribs,
+		TotalPullRequestReviewContribs: collection.TotalPullRequestReviewContribs,
+		TotalRepositoryContribs:        collection.TotalRepositoryContribs,
+		RepositoriesWithCommits:        collection.TotalRepositoriesWithContributedCommits,
+		RestrictedContributions:        collection.RestrictedContributions,
+		HasRestrictedContributions:     collection.HasRestrictedContributions,
+	}, nil
+}
+
+func contributionYearRange(year int, now time.Time) (time.Time, time.Time) {
+	from := time.Date(year, time.January, 1, 0, 0, 0, 0, time.UTC)
+	to := time.Date(year, time.December, 31, 23, 59, 59, 0, time.UTC)
+	if year == now.Year() {
+		to = now
+	}
+	return from, to
+}
+
+func (client *graphQLClient) pullRequestLineStats(ctx context.Context, username string, years []int) (contributionLineStats, error) {
+	const query = `
+query($query: String!, $cursor: String) {
+  search(query: $query, type: ISSUE, first: 100, after: $cursor) {
+    issueCount
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    nodes {
+      ... on PullRequest {
+        additions
+        deletions
+      }
+    }
+  }
+}`
+	// GitHub does not expose exact lifetime line totals in ContributionsCollection.
+	// This intentionally omits repository, branch, title, URL, and path fields, and
+	// sums only anonymous PR additions/deletions visible to PROFILE_STATS_TOKEN.
+	stats := contributionLineStats{Available: true}
+	nowYear := time.Now().UTC().Year()
+	for _, year := range years {
+		if year > nowYear {
+			continue
+		}
+		searchQuery := fmt.Sprintf("author:%s type:pr created:%04d-01-01..%04d-12-31", username, year, year)
+		var cursor any
+		for page := 0; ; page++ {
+			var response pullRequestLineSearchResponse
+			err := client.query(ctx, query, map[string]any{
+				"query":  searchQuery,
+				"cursor": cursor,
+			}, &response)
+			if err != nil {
+				return contributionLineStats{}, err
+			}
+			if response.Search.IssueCount > 1000 {
+				stats.Partial = true
+			}
+			for _, node := range response.Search.Nodes {
+				stats.Additions += node.Additions
+				stats.Deletions += node.Deletions
+				stats.PullRequests++
+			}
+			if !response.Search.PageInfo.HasNextPage || response.Search.PageInfo.EndCursor == "" {
+				break
+			}
+			if page >= 9 {
+				stats.Partial = true
+				break
+			}
+			cursor = response.Search.PageInfo.EndCursor
+		}
+	}
+	return stats, nil
+}
+
+func (client *graphQLClient) query(ctx context.Context, query string, variables map[string]any, target any) error {
+	payload := struct {
+		Query     string         `json:"query"`
+		Variables map[string]any `json:"variables"`
+	}{
+		Query:     query,
+		Variables: variables,
+	}
+	body, err := json.Marshal(payload)
+	if err != nil {
+		return fmt.Errorf("encode GraphQL request: %w", err)
+	}
+	request, err := http.NewRequestWithContext(ctx, http.MethodPost, githubGraphQLURL, bytes.NewReader(body))
+	if err != nil {
+		return err
+	}
+	request.Header.Set("Accept", "application/vnd.github+json")
+	request.Header.Set("Content-Type", "application/json")
+	request.Header.Set("User-Agent", "kristyancarvalho-readme-generator")
+	request.Header.Set("X-GitHub-Api-Version", "2022-11-28")
+	request.Header.Set("Authorization", "Bearer "+client.token)
+
+	response, err := client.http.Do(request)
+	if err != nil {
+		return err
+	}
+	defer response.Body.Close()
+	if response.StatusCode < http.StatusOK || response.StatusCode >= http.StatusMultipleChoices {
+		return graphQLHTTPError(response)
+	}
+
+	var envelope struct {
+		Data   json.RawMessage `json:"data"`
+		Errors []struct {
+			Type string `json:"type"`
+		} `json:"errors"`
+	}
+	if err := json.NewDecoder(io.LimitReader(response.Body, 1<<20)).Decode(&envelope); err != nil {
+		return fmt.Errorf("decode GraphQL response: %w", err)
+	}
+	if len(envelope.Errors) > 0 {
+		return fmt.Errorf("GitHub GraphQL returned %d error(s)", len(envelope.Errors))
+	}
+	if len(envelope.Data) == 0 || string(envelope.Data) == "null" {
+		return errors.New("GitHub GraphQL returned no data")
+	}
+	if err := json.Unmarshal(envelope.Data, target); err != nil {
+		return fmt.Errorf("decode GraphQL data: %w", err)
+	}
+	return nil
+}
+
+func graphQLHTTPError(response *http.Response) error {
+	switch response.StatusCode {
+	case http.StatusUnauthorized:
+		return errors.New("GitHub GraphQL authentication failed")
+	case http.StatusForbidden:
+		if response.Header.Get("X-RateLimit-Remaining") == "0" {
+			reset := formatRateLimitReset(response.Header.Get("X-RateLimit-Reset"))
+			if reset != "" {
+				return fmt.Errorf("GitHub GraphQL rate limit exceeded; resets at %s", reset)
+			}
+			return errors.New("GitHub GraphQL rate limit exceeded")
+		}
+		return errors.New("GitHub GraphQL access forbidden")
+	default:
+		return fmt.Errorf("GitHub GraphQL returned %s", response.Status)
+	}
+}
+
+func formatRateLimitReset(value string) string {
+	seconds, err := strconv.ParseInt(strings.TrimSpace(value), 10, 64)
+	if err != nil || seconds <= 0 {
+		return ""
+	}
+	return time.Unix(seconds, 0).UTC().Format(time.RFC3339)
 }
 
 func fetchBlog(ctx context.Context, client *http.Client, url string, limit int) ([]blogPost, error) {
@@ -813,6 +1219,123 @@ func renderActivity(cfg config, events []githubEvent, fresh bool) []byte {
 	return s.finish()
 }
 
+func renderContributionStats(stats contributionStats) []byte {
+	s := newSVG(465, "Contribuições agregadas", "Resumo anônimo de contribuições no GitHub", "~/contribuicoes")
+	if !stats.Ready {
+		s.text(38, 104, "text body muted", "Estatísticas agregadas temporariamente indisponíveis.")
+		s.text(38, 136, "text body", stats.Note)
+		s.text(38, 168, "text small muted", "O widget permanece seguro sem renderizar metadados privados.")
+		s.pill(38, 198, "PROFILE_STATS_TOKEN", true)
+		return s.finish()
+	}
+
+	metric(s, 38, 76, "commits", compactNumber(stats.TotalCommitContributions))
+	metric(s, 252, 76, "contribuições", compactNumber(stats.TotalContributions))
+	metric(s, 466, 76, "prs + reviews", compactNumber(stats.TotalPullRequestContribs+stats.TotalPullRequestReviewContribs))
+	metric(s, 680, 76, "privado", contributionPrivateLabel(stats.PrivateMode))
+
+	additions, deletions, touched := "n/d", "n/d", "n/d"
+	if stats.Lines.Available {
+		additions = compactNumber(stats.Lines.Additions)
+		deletions = compactNumber(stats.Lines.Deletions)
+		touched = compactNumber(stats.Lines.Additions + stats.Lines.Deletions)
+	}
+	metric(s, 38, 158, "linhas +", additions)
+	metric(s, 252, 158, "linhas -", deletions)
+	metric(s, 466, 158, "toque est.", touched)
+	metric(s, 680, 158, "issues", compactNumber(stats.TotalIssueContributions))
+
+	s.text(38, 260, "text label accent", "commits por ano")
+	renderCommitTrend(s, 38, 282, 884, 82, stats.Years)
+
+	s.line(38, 396, 922, 396, readmeTheme.Border, 1)
+	scope := fmt.Sprintf("escopo: %s · linhas: %s", contributionPrivateLabel(stats.PrivateMode), contributionLineLabel(stats.LineMode))
+	if stats.Note != "" {
+		scope += " · " + stats.Note
+	}
+	s.text(38, 425, "text small muted", scope)
+	s.text(38, 448, "text small muted", "Dados anonimizados: sem nomes de repositórios, branches, caminhos ou mensagens.")
+	return s.finish()
+}
+
+func renderCommitTrend(s *svgBuilder, x, y, width, height int, years []yearContributionStats) {
+	if len(years) == 0 {
+		s.text(x, y+40, "text body muted", "Sem contribuições no período consultado.")
+		return
+	}
+	if len(years) > 12 {
+		years = years[len(years)-12:]
+	}
+	maxCommits := 1
+	for _, item := range years {
+		if item.Commits > maxCommits {
+			maxCommits = item.Commits
+		}
+	}
+	gap := 12
+	barWidth := min(52, (width-gap*(len(years)-1))/len(years))
+	if barWidth < 8 {
+		barWidth = 8
+	}
+	totalWidth := barWidth*len(years) + gap*(len(years)-1)
+	startX := x + (width-totalWidth)/2
+	baseY := y + height
+	for index, item := range years {
+		barHeight := 8
+		if item.Commits > 0 {
+			barHeight = 16 + item.Commits*(height-18)/maxCommits
+		}
+		barX := startX + index*(barWidth+gap)
+		barY := baseY - barHeight
+		color := activityColor(item.Commits, maxCommits)
+		s.rect(barX, barY, barWidth, barHeight, 6, color, color)
+		s.text(barX+max(0, (barWidth-16)/2), baseY+22, "text small muted", fmt.Sprintf("%02d", item.Year%100))
+	}
+}
+
+func compactNumber(value int) string {
+	absolute := value
+	if absolute < 0 {
+		absolute = -absolute
+	}
+	switch {
+	case absolute >= 1000000:
+		return strings.TrimSuffix(strings.TrimSuffix(fmt.Sprintf("%.1fM", float64(value)/1000000), "0"), ".")
+	case absolute >= 1000:
+		return strings.TrimSuffix(strings.TrimSuffix(fmt.Sprintf("%.1fk", float64(value)/1000), "0"), ".")
+	default:
+		return strconv.Itoa(value)
+	}
+}
+
+func contributionPrivateLabel(mode string) string {
+	switch mode {
+	case "agregado":
+		return "agregado"
+	case "limitado":
+		return "limitado"
+	case "token ausente":
+		return "ausente"
+	case "somente publico":
+		return "público"
+	default:
+		return mode
+	}
+}
+
+func contributionLineLabel(mode string) string {
+	switch mode {
+	case "prs acessiveis":
+		return "PRs acessíveis"
+	case "parcial":
+		return "PRs parciais"
+	case "indisponivel":
+		return "n/d"
+	default:
+		return mode
+	}
+}
+
 type activityItem struct {
 	Description string
 	When        string
@@ -941,6 +1464,8 @@ func readmeAssetBlock(cfg config) string {
 <a href="https://github.com/%s?tab=repositories"><img src="./assets/readme/github-stats.svg" width="100%%" alt="Estatísticas dos repositórios públicos no GitHub" /></a>
 
 <a href="https://github.com/%s?tab=overview"><img src="./assets/readme/activity.svg" width="100%%" alt="Atividade pública recente no GitHub" /></a>
+
+<img src="./assets/readme/contributions.svg" width="100%%" alt="Atividade agregada de contribuições no GitHub" />
 
 </div>
 %s`, startMarker, cfg.Links[0].URL, cfg.BlogURL, cfg.GitHubUsername, cfg.GitHubUsername, endMarker)

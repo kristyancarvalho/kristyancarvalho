@@ -107,3 +107,63 @@ func TestThemeDoesNotContainLegacyPurple(t *testing.T) {
 		}
 	}
 }
+
+func TestContributionStatsRenderAggregatesOnly(t *testing.T) {
+	stats := contributionStats{
+		Ready:                          true,
+		PrivateMode:                    "agregado",
+		LineMode:                       "prs acessiveis",
+		TotalContributions:             1234,
+		TotalCommitContributions:       987,
+		TotalPullRequestContribs:       12,
+		TotalPullRequestReviewContribs: 5,
+		RepositoriesWithCommits:        8,
+		Years: []yearContributionStats{
+			{Year: 2024, Commits: 120, Contributions: 180},
+			{Year: 2025, Commits: 240, Contributions: 300},
+		},
+		Lines: contributionLineStats{
+			Available: true,
+			Additions: 1500,
+			Deletions: 300,
+		},
+	}
+
+	rendered := string(renderContributionStats(stats))
+	for _, expected := range []string{"commits por ano", "linhas +", "toque est.", "Dados anonimizados"} {
+		if !strings.Contains(rendered, expected) {
+			t.Fatalf("contribution widget missing %q", expected)
+		}
+	}
+	for _, forbidden := range []string{"private-repo", "refs/heads", "commit message", "/src/private.go", "pull/"} {
+		if strings.Contains(rendered, forbidden) {
+			t.Fatalf("contribution widget leaked private metadata marker %q", forbidden)
+		}
+	}
+}
+
+func TestContributionStatsFallbackMentionsTokenWithoutBreakingSVG(t *testing.T) {
+	rendered := string(renderContributionStats(fallbackContributionStats("token ausente", "indisponivel")))
+	if !strings.Contains(rendered, "PROFILE_STATS_TOKEN") {
+		t.Fatal("fallback widget does not mention PROFILE_STATS_TOKEN")
+	}
+	if !strings.HasPrefix(rendered, "<svg") || !strings.HasSuffix(rendered, "</svg>") {
+		t.Fatal("fallback contribution widget is not a complete SVG")
+	}
+}
+
+func TestReadmeAssetBlockAddsContributionWidgetAfterActivity(t *testing.T) {
+	block := readmeAssetBlock(config{
+		GitHubUsername: "kristyancarvalho",
+		BlogURL:        "https://blog.kristyan.dev",
+		Links:          []link{{URL: "https://kristyan.dev"}},
+	})
+	activityIndex := strings.Index(block, "activity.svg")
+	contributionIndex := strings.Index(block, "contributions.svg")
+	if activityIndex == -1 || contributionIndex == -1 {
+		t.Fatalf("README block missing activity or contribution widget")
+	}
+	if contributionIndex < activityIndex {
+		t.Fatalf("contribution widget must appear below activity widget")
+	}
+}

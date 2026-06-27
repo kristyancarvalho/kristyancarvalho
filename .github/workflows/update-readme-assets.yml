@@ -29,6 +29,9 @@ jobs:
       - name: Generate README assets
         env:
           GH_TOKEN: ${{ github.token }}
+          # Optional PAT for private/internal contribution counts and anonymous PR line totals.
+          # Classic PAT: read:user; add repo when private PR line estimates should be included.
+          PROFILE_STATS_TOKEN: ${{ secrets.PROFILE_STATS_TOKEN }}
         run: go run ./scripts/generate-readme-assets.go
 
       - name: Commit generated changes
