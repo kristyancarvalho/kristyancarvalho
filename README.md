@@ -15,7 +15,7 @@
 
 <a href="https://github.com/kristyancarvalho?tab=overview"><img src="./assets/readme/activity.svg?v=17cf5ef9dbab" width="100%" alt="Atividade pública recente no GitHub" /></a>
 
-<img src="./assets/readme/contributions.svg?v=ba729ebc6543" width="100%" alt="Atividade agregada de contribuições no GitHub" />
+<img src="./assets/readme/contributions.svg?v=11d7ccba617e" width="100%" alt="Atividade agregada de contribuições no GitHub" />
 
 </div>
 <!-- README-ASSETS:END -->
