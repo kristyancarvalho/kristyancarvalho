@@ -9,13 +9,13 @@
 
 <img src="./assets/readme/stack.svg?v=24f5c569ab11" width="100%" alt="Stack de tecnologias" />
 
-<a href="https://blog.kristyan.dev"><img src="./assets/readme/blog.svg?v=9f25cc560c3c" width="100%" alt="Últimos posts do blog" /></a>
+<a href="https://blog.kristyan.dev"><img src="./assets/readme/blog.svg?v=47f61d807f29" width="100%" alt="Últimos posts do blog" /></a>
 
-<a href="https://github.com/kristyancarvalho?tab=repositories"><img src="./assets/readme/github-stats.svg?v=54ba0eadb40c" width="100%" alt="Estatísticas dos repositórios públicos no GitHub" /></a>
+<a href="https://github.com/kristyancarvalho?tab=repositories"><img src="./assets/readme/github-stats.svg?v=9c753d5e40ab" width="100%" alt="Estatísticas dos repositórios públicos no GitHub" /></a>
 
-<a href="https://github.com/kristyancarvalho?tab=overview"><img src="./assets/readme/activity.svg?v=03739d78e306" width="100%" alt="Atividade pública recente no GitHub" /></a>
+<a href="https://github.com/kristyancarvalho?tab=overview"><img src="./assets/readme/activity.svg?v=17cf5ef9dbab" width="100%" alt="Atividade pública recente no GitHub" /></a>
 
-<img src="./assets/readme/contributions.svg?v=042821f98805" width="100%" alt="Atividade agregada de contribuições no GitHub" />
+<img src="./assets/readme/contributions.svg?v=ba729ebc6543" width="100%" alt="Atividade agregada de contribuições no GitHub" />
 
 </div>
 <!-- README-ASSETS:END -->
