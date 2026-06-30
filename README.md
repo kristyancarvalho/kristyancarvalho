@@ -11,9 +11,9 @@
 
 <a href="https://blog.kristyan.dev"><img src="./assets/readme/blog.svg?v=f34ecb73f5b8" width="100%" alt="Últimos posts do blog" /></a>
 
-<a href="https://github.com/kristyancarvalho?tab=repositories"><img src="./assets/readme/github-stats.svg?v=7c7e5c512a48" width="100%" alt="Estatísticas dos repositórios públicos no GitHub" /></a>
+<a href="https://github.com/kristyancarvalho?tab=repositories"><img src="./assets/readme/github-stats.svg?v=daf9502a77ff" width="100%" alt="Estatísticas dos repositórios públicos no GitHub" /></a>
 
-<a href="https://github.com/kristyancarvalho?tab=overview"><img src="./assets/readme/activity.svg?v=cf97e4685fce" width="100%" alt="Atividade pública recente no GitHub" /></a>
+<a href="https://github.com/kristyancarvalho?tab=overview"><img src="./assets/readme/activity.svg?v=fef2e59d1811" width="100%" alt="Atividade pública recente no GitHub" /></a>
 
 <img src="./assets/readme/contributions.svg?v=31ee7a583b3f" width="100%" alt="Atividade agregada de contribuições no GitHub" />
 
