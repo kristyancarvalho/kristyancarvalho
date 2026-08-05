@@ -1,7 +1,7 @@
 <!-- README-ASSETS:START -->
 <div align="center">
 
-<a href="https://kristyan.dev"><img src="./assets/readme/header.svg?v=2a5d5cf552b3" width="100%" alt="Kristyan Carvalho — Full-Stack Developer" /></a>
+<a href="https://kristyan.dev"><img src="./assets/readme/header.svg?v=79f5f34d9cf9" width="100%" alt="Kristyan Carvalho — Full-Stack Developer" /></a>
 
 <img src="./assets/readme/about.svg?v=a9d8fce7912c" width="100%" alt="Sobre mim" />
 
@@ -11,7 +11,7 @@
 
 <a href="https://blog.kristyan.dev"><img src="./assets/readme/blog.svg?v=d4393f8b5b33" width="100%" alt="Últimos posts do blog" /></a>
 
-<a href="https://github.com/kristyancarvalho?tab=repositories"><img src="./assets/readme/github-stats.svg?v=0a4b6d59c2db" width="100%" alt="Estatísticas dos repositórios públicos no GitHub" /></a>
+<a href="https://github.com/kristyancarvalho?tab=repositories"><img src="./assets/readme/github-stats.svg?v=f6e731d24546" width="100%" alt="Estatísticas dos repositórios públicos no GitHub" /></a>
 
 <a href="https://github.com/kristyancarvalho?tab=overview"><img src="./assets/readme/activity.svg?v=98146e2a8770" width="100%" alt="Atividade pública recente no GitHub" /></a>
 
