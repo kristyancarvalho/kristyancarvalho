@@ -9,7 +9,7 @@
 
 <img src="./assets/readme/stack.svg?v=24f5c569ab11" width="100%" alt="Stack de tecnologias" />
 
-<a href="https://blog.kristyan.dev"><img src="./assets/readme/blog.svg?v=420bda2d49c5" width="100%" alt="Últimos posts do blog" /></a>
+<a href="https://blog.kristyan.dev"><img src="./assets/readme/blog.svg?v=55528e410b97" width="100%" alt="Últimos posts do blog" /></a>
 
 <a href="https://github.com/kristyancarvalho?tab=repositories"><img src="./assets/readme/github-stats.svg?v=b3aa58cb4c5c" width="100%" alt="Estatísticas dos repositórios públicos no GitHub" /></a>
 
