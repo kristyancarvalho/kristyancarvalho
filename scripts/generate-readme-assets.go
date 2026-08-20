@@ -499,14 +499,14 @@ func renderPins(s *svgBuilder, pins []pinnedRepository) {
 	}
 }
 func renderEnvironment(s *svgBuilder, items []string) {
-	x := 40
+	x := 72
 	for _, item := range items {
-		if x > 850 {
+		if x > 856 {
 			break
 		}
 		s.icon(item, x, 397, 26, theme.Text)
 		s.centeredText(x+13, 438, "small", truncate(item, 11))
-		x += 108
+		x += 112
 	}
 }
 func renderPosts(s *svgBuilder, posts []blogPost) {
